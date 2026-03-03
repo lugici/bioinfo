@@ -62,7 +62,7 @@ kable(genomas) %>% kable_styling()
 1. ¿Qué diferencia hay entre las líneas 7 y 8 de la tabla anterior?
 GCF_003719485.1
 GCA_003719485.1
-la diferencia es en las primeras tres letrs la ultima en uno es F y en A,siendo la F del genoma de referencia curado y el A ensamblajes primarios enviados por centros de secuenciacion.
+la diferencia es en las primeras tres letrs la ultima en uno es F y en A,siendo la F del genoma de referencia curado y el A ensamblajes primarios enviados por centros de secuenciacion. diferencia entre la base de datos propia y la general.
 
 2. Busca una función de R que te permita identificar las líneas repetidas en un
    marco de datos.
