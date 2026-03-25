@@ -1,0 +1,132 @@
+---
+title: "Práctica 8.BLAST"
+format: html
+editor: visual
+---
+
+## Ejercicio 1
+
+enmascarar e indexar los proteomas
+
+```{bash}
+if [ ! -e ../../data/buchnera.paa ]; then
+   # Creamos un archivo para enmascarar zonas de baja complejidad:
+   if [ ! -e buchnera_seg.asnb ]; then
+      segmasker -in ../../data/buchnera/buchnera.fa \
+                -infmt fasta \
+                -parse_seqids \
+                -outfmt maskinfo_asn1_bin \
+                -out ../../data/buchnera_seg.asnb
+   fi
+   # Y indexamos el archivo FASTA para BLAST:
+   makeblastdb  -in ../../data/buchnera/buchnera.fa \
+                -input_type fasta \
+                -dbtype prot \
+                -parse_seqids \
+                -mask_data ../../data/buchnera_seg.asnb \
+                -out ../../data/buchnera/buchnera \
+                -title "Proteoma de Buchnera"
+fi
+# Hay que repetir todo esto para Blochmannia.
+```
+
+se repite lo mismo ejecutando lo mismo pero poniendo en donde pone buchnera lo cambio por blochmannia
+
+```{bash}
+if [ ! -e ../../data/blochmannia.paa ]; then
+   # Creamos un archivo para enmascarar zonas de baja complejidad:
+   if [ ! -e buchnera_seg.asnb ]; then
+      segmasker -in ../../data/blochmannia/blochmannia.fa \
+                -infmt fasta \
+                -parse_seqids \
+                -outfmt maskinfo_asn1_bin \
+                -out ../../data/blochmannia_seg.asnb
+   fi
+   # Y indexamos el archivo FASTA para BLAST:
+   makeblastdb  -in ../../data/blochmannia/blochmannia.fa \
+                -input_type fasta \
+                -dbtype prot \
+                -parse_seqids \
+                -mask_data ../../data/blochmannia_seg.asnb \
+                -out ../../data/blochmannia/blochmannia \
+                -title "Proteoma de Buchnera"
+fi
+# Hay que repetir todo esto para Blochmannia.
+```
+
+en la tabla compara la proteina "x" de buchnera con una prot "y" de blochmannia que se supone que es la mas cercana a ella, si haciendo lo contrario asocian la prot "y" con la "x" se pueden considerar ortologas
+
+funcion match lo que hace es cruzar los datos de dos tablas
+
+Los datos que nos gustarian representar graficamente por ejemplo que las parejas tienen valores e bajos o por ejemplo que no hay mucho gaps, la longitud de la query, etc.
+
+##Ejercicio 2 PSI-BLAST
+
+```{bash}
+# Como Swissprot debería estar ya descargada en `../../data`, podemos sacar
+# de ahí la secuencia de la proteína escogida:
+blastdbcmd -db ../../data/swissprot -entry P39615 -out P39615.fa
+
+# Y ahora la usamos como query en psi-blast:
+psiblast -db ../../data/swissprot \
+         -query P39615.fa \
+         -out P39615.blastout.txt \
+         -evalue 0.1 \
+         -outfmt 7 \
+         -inclusion_ethresh 0.001 \
+         -num_iterations 7 \
+         -matrix BLOSUM62
+```
+ahora lo mismo para otra proteina
+
+```{bash}
+# Como Swissprot debería estar ya descargada en `../../data`, podemos sacar
+# de ahí la secuencia de la proteína escogida:
+blastdbcmd -db ../../data/swissprot -entry A1AFY9 -out A1AFY9.fa
+
+# Y ahora la usamos como query en psi-blast:
+psiblast -db ../../data/swissprot \
+         -query A1AFY9.fa \
+         -out A1AFY9.blastout.txt \
+         -evalue 0.1 \
+         -outfmt 7 \
+         -inclusion_ethresh 0.001 \
+         -num_iterations 7 \
+         -matrix BLOSUM62
+```
+
+NOTA: Consulta la ayuda de psiblast y asegúrate de entender para qué sirven los argumentos que hemos usado. Por ejemplo, ¿cuál es la diferencia entre -evalue y -inclusion_ethresh?¿Cómo harías que la búsqueda fuera más sensible todavía?
+
+
+
+
+
+
+## Ejercicio 3
+
+selección aleatoria de 20
+
+```{r}
+library('Biostrings')
+unmapped <- readDNAStringSet('../../data/contaminacion.fa.gz')
+n <- length(unmapped)
+muestra <- unmapped[sample(1:n, 20)]
+writeXStringSet(muestra, 'muestra.fa')
+```
+
+```{bash}
+if [ ! -e resultado.txt ]; then
+   blastn -query muestra.fa \
+          -db nr \
+          -out resultado.txt \
+          -outfmt '6 qaccver saccver length qlen qstart qend evalue bitscore staxid' \
+          -max_target_seqs 1 \
+          -evalue 0.001 \
+          -remote 
+fi
+```
+le hemos puesto un e value tan retrictivo que en un conjuno tan variado de organismos no ha encontrado ninguna, por eso e archivo es de 0B, la semejanza de las proteinas de la superfamilia es bastante debil.
+
+para hacer lo ismo con las demas se haria: for proteina in el nombre de todas las proteinas; do. hay que poner el dolar delante de proteina para que lo entienda como una variable.
+
+RECOMENDACION CAMBIAR EL NUMRO DE SALIDA DEL 7 AL 6 PARA QUE NO PONGA CABECERAS
