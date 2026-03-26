@@ -1,0 +1,158 @@
+---
+title: "guion9"
+format:  
+   html: 
+     embed-resources: true
+editor: visual
+---
+
+DATOS: ALINEMIENTOS DE 42 CROMOSOMAS MITOCONDRIALES
+
+## Ejercicio 1
+
+```{r}
+library(phangorn)
+mtdna <- read.phyDat('../../data/mtDNA.fasta', format = 'fasta')
+glance(mtdna)
+```
+NOTA: Sería sensato reducir el conjunto de datos. ¿Qué secuencias eliminarías? Si quieres, puedes intentarlo con la función subset().
+
+#para evaluar cual de los modelos es el que mejor se adapta a nuestros datos
+
+```{r}
+modelos <- modelTest(mtdna, control = pml.control(trace = 0))
+```
+
+Para procesadores más potentes
+
+```{r}
+modelos <- modelTest(mtdna, control = pml.control(trace = 0),
+                     multicore = TRUE, mc.cores = 2)
+```
+
+Para ver cual de los modelos ha elegido como el que mejor se ajusta a nuestrocaso en la consola hay que poner:modelos[order(modelos$BIC), ], en nuestro caso el que tiene un AIC menor es TIM2+G(4)+I.
+
+#NJ y UPGMA
+
+La función dist.ml() de phangorn solo permite usar distancias de Juke Cantor y de Felsenstein 1981 con ADN. Para usar otros modelos, debemos usar la función dist.dna() del paquete ape (automáticamente cargado con phangorn), que se aplica a objetos de clase DNAbin. Por eso, usamos la función as.DNAbin() para presentarle a dist.dna() los datos en el formato adecuado. En cualquier caso, dist.dna() tampoco implementa todos los modelos.
+
+En R se ven mal los árboles podemos hacerlas más grandes poniendo #| fig-width: 5 y en otra linea #| fig-height: 10
+
+```{r}
+#| fig-width: 10
+#| fig-height: 10
+mt_nj    <-    NJ(dist.dna(as.DNAbin(mtdna), model = 'TN93', gamma = 0.93))
+mt_upgma <- upgma(dist.dna(as.DNAbin(mtdna), model = 'TN93', gamma = 0.93))
+plot(midpoint(mt_nj))
+add.scale.bar()
+
+plot(mt_upgma)
+axisPhylo()
+```
+
+NOTA: Cuando la función plot() se aplica a un objeto de clase phylo, en realidad se ejecuta la función plot.phylo(). Si quieres explorar las opciones de representación gráfica de árboles con plot(), consulta help(plot.phylo).
+
+¿Por qué usamos midpoint() al representar gráficamente el árbol de NJ?
+
+```{r}
+#| fig-width: 10
+#| fig-height: 10
+plot(x= mt_nj, type = "phylogram", use.edge.length = TRUE,
+     node.pos = NULL, show.tip.label = TRUE,
+     show.node.label = FALSE, edge.color = NULL, edge.width
+     = NULL, edge.lty = NULL, node.color = NULL, node.width
+     = NULL, node.lty = NULL, font = 3, cex = par("cex"),
+     adj = NULL, srt = 0, no.margin = FALSE, root.edge =
+     FALSE, label.offset = 0, underscore = FALSE, x.lim =
+     NULL, y.lim = NULL, direction = "rightwards", lab4ut =
+     NULL, tip.color = par("col"), plot = TRUE, rotate.tree
+     = 0, open.angle = 0, node.depth = 1, align.tip.label =
+     TRUE)
+```
+¿Por qué usamos midpoint() al representar gráficamente el árbol de NJ?
+
+VOY A VER QUE PASA SI NO LO PONGO. Se ve que la función de midpoint es forzar para que se parezca lo maximo posible a un arbol ultrametrico y alinear las especies para ponerlas a la misma altura. si no lo ponemos es arbitrario.
+
+```{r}
+#| fig-width: 10
+#| fig-height: 10
+mt_nj    <-    NJ(dist.dna(as.DNAbin(mtdna), model = 'TN93', gamma = 0.93))
+mt_upgma <- upgma(dist.dna(as.DNAbin(mtdna), model = 'TN93', gamma = 0.93))
+plot((mt_nj))
+add.scale.bar()
+
+plot(mt_upgma)
+axisPhylo()
+```
+#enraizar el arbol
+```{r}
+#| fig-width: 10
+#| fig-height: 10
+mt_nj    <-    NJ(dist.dna(as.DNAbin(mtdna), model = 'TN93', gamma = 0.93))
+mt_upgma <- upgma(dist.dna(as.DNAbin(mtdna), model = 'TN93', gamma = 0.93))
+plot(midpoint(mt_nj))
+add.scale.bar()
+
+plot(mt_upgma)
+axisPhylo()
+enraizado <- root(mt_nj, 'G.gorilla_D38114')
+```
+Llama la atencion que los denisovanos no salgan cerca de los neandertales, cosa que si sucede si usamos cromosomas nucleares, y esto se debe a que los denisovanos tenian un genoma mitocondrial mas divergente.
+
+#maxima verosimilitud
+
+```{r}
+veros <- pml_bb(mtdna, model = 'GTR+G(4)+I',
+                control = pml.control(trace = 0))
+```
+
+```{r}
+#| fig-width: 10
+#| fig-height: 20
+mt_ml <- root(veros$tree, 'G.gorilla_D38114')
+plot(midpoint(mt_ml))
+nodelabels()
+```
+
+```{r}
+homo <- extract.clade(mt_ml, 62)
+plot(midpoint(homo))
+```
+
+#datación de puntos
+
+```{r}
+fechas <- c(0, 0, 0, 0, 0, 0, 0, 0, 0,
+              -400000,
+              -39000, -50000, -110000, -110000,
+              -39820, -40096, -38515, -38310, -39000, -40000, -41210,
+              -42430, -42540, -43230, -43780, -44290, -44770, -49000,
+              -50000, -82752, -65000, -122287, -110450,
+              0, 0, 0, 0, 0, 0, 0, 0, 0)
+setNames(fechas, names(mtdna))
+```
+
+```{r}
+fit_td <- pml_bb(mtdna, model = 'GTR+G(4)+I', method = 'tipdated',
+                 tree = enraizado,
+                 tip.dates = fechas, rearrangement = 'NNI',
+                 control = pml.control(trace = 0))
+```
+
+```{r}
+#| fig-width: 10
+#| fig-height: 20
+plot(fit_td)
+```
+
+estimate.mu() nos ayuda a datar los nodos y las puntas y si pongo dates en vez de mu me integra tambien el reloj molecular, si pongo notes.dates le puedo poner la fecha en milones de años, como es del pasado las fechas van en negativo. si quiero hacer esto necsito saber el orden en el que aparecen los nodos.
+
+```{r}
+estimate.mu(mt_nj, fechas, p.tol = 0.05)
+```
+esto es la tasa de cambio por cada posicion y unidad de tiempo (años) hay 1.75024e-07 sustituciones por posición y por años.
+
+
+
+
+
