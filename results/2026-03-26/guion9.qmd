@@ -14,8 +14,27 @@ DATOS: ALINEMIENTOS DE 42 CROMOSOMAS MITOCONDRIALES
 library(phangorn)
 mtdna <- read.phyDat('../../data/mtDNA.fasta', format = 'fasta')
 glance(mtdna)
+image(mtdna)
 ```
-NOTA: Sería sensato reducir el conjunto de datos. ¿Qué secuencias eliminarías? Si quieres, puedes intentarlo con la función subset().
+
+EJERCICIO:¿Puedes confirmar el número de secuencias? ¿Qué longitud tiene el alineamiento? ¿Qué función usarías para extraer los nombres de las secuencias? Sí, en el apartado nseq de la tablarealizada con glance se observa que el número de seecuencias, 42 (o haciendo lenght(mtdna). La longitud es de 16603 nucleótidos (observada a parti de nchar). En cuanto a los nombres se haria poniendo en la consola, name(mtdna)
+
+#árboles basados en distancias
+
+```{r}
+#| fig-width: 10
+#| fig-height: 10
+distancias <- dist.ml(mtdna, model = 'F81')
+mt_nj    <- NJ(distancias)
+mt_upgma <- upgma(distancias)
+plot(midpoint(mt_nj))
+add.scale.bar()
+
+plot(mt_upgma)
+axisPhylo()
+```
+
+EJERCICIO: ¿De qué clase son los objetos mt_nj y mt_upgma? Consulta la estructura de estos objetos (str(mt_nj)). Ejecutando en la consola lo anterios se determina qie nj es de clase filo, repitiendo lo mismo para upgma se ve qu es tambien de clase filo. Represéntalos gráficamente (plot(mt_nj)) y consulta la ayuda de la función plot.phylo() para saber qué opciones de representación gráfica tienes. Para qué sirven las funciones add.scale.bar() y axisPhylo()? axisPhylo() tiene como funcion añadir un eje horizontal que representa una escala temporal en sustituciones por sitio. add.scale.bar() sirve para poner una pequeña barra inferior que sirve como escala temporal en sustituciones por sitio.
 
 #para evaluar cual de los modelos es el que mejor se adapta a nuestros datos
 
@@ -30,13 +49,13 @@ modelos <- modelTest(mtdna, control = pml.control(trace = 0),
                      multicore = TRUE, mc.cores = 2)
 ```
 
-Para ver cual de los modelos ha elegido como el que mejor se ajusta a nuestrocaso en la consola hay que poner:modelos[order(modelos$BIC), ], en nuestro caso el que tiene un AIC menor es TIM2+G(4)+I.
+Para ver cual de los modelos ha elegido como el que mejor se ajusta a nuestrocaso en la consola hay que poner:modelos\[order(modelos\$BIC), \], en nuestro caso el que tiene un AIC menor es TIM2+G(4)+I.
 
 #NJ y UPGMA
 
 La función dist.ml() de phangorn solo permite usar distancias de Juke Cantor y de Felsenstein 1981 con ADN. Para usar otros modelos, debemos usar la función dist.dna() del paquete ape (automáticamente cargado con phangorn), que se aplica a objetos de clase DNAbin. Por eso, usamos la función as.DNAbin() para presentarle a dist.dna() los datos en el formato adecuado. En cualquier caso, dist.dna() tampoco implementa todos los modelos.
 
-En R se ven mal los árboles podemos hacerlas más grandes poniendo #| fig-width: 5 y en otra linea #| fig-height: 10
+En R se ven mal los árboles podemos hacerlas más grandes poniendo #\| fig-width: 5 y en otra linea #\| fig-height: 10
 
 ```{r}
 #| fig-width: 10
@@ -51,8 +70,6 @@ axisPhylo()
 ```
 
 NOTA: Cuando la función plot() se aplica a un objeto de clase phylo, en realidad se ejecuta la función plot.phylo(). Si quieres explorar las opciones de representación gráfica de árboles con plot(), consulta help(plot.phylo).
-
-¿Por qué usamos midpoint() al representar gráficamente el árbol de NJ?
 
 ```{r}
 #| fig-width: 10
@@ -69,6 +86,7 @@ plot(x= mt_nj, type = "phylogram", use.edge.length = TRUE,
      = 0, open.angle = 0, node.depth = 1, align.tip.label =
      TRUE)
 ```
+
 ¿Por qué usamos midpoint() al representar gráficamente el árbol de NJ?
 
 VOY A VER QUE PASA SI NO LO PONGO. Se ve que la función de midpoint es forzar para que se parezca lo maximo posible a un arbol ultrametrico y alinear las especies para ponerlas a la misma altura. si no lo ponemos es arbitrario.
@@ -84,7 +102,26 @@ add.scale.bar()
 plot(mt_upgma)
 axisPhylo()
 ```
-#enraizar el arbol
+
+#enraizar el arbol 
+-escogiendo el nodo
+
+```{r}
+#| fig-width: 10
+#| fig-height: 10
+mt_nj    <-    NJ(dist.dna(as.DNAbin(mtdna), model = 'F81', gamma = 0.93))
+mt_upgma <- upgma(dist.dna(as.DNAbin(mtdna), model = 'F81', gamma = 0.93))
+plot(midpoint(mt_nj))
+add.scale.bar()
+
+plot(mt_upgma)
+axisPhylo()
+enraizado <- root(mt_nj, node = 75)
+plot(enraizado)
+```
+
+-con un outgroup
+
 ```{r}
 #| fig-width: 10
 #| fig-height: 10
@@ -96,8 +133,24 @@ add.scale.bar()
 plot(mt_upgma)
 axisPhylo()
 enraizado <- root(mt_nj, 'G.gorilla_D38114')
+plot(enraizado)
 ```
+
 Llama la atencion que los denisovanos no salgan cerca de los neandertales, cosa que si sucede si usamos cromosomas nucleares, y esto se debe a que los denisovanos tenian un genoma mitocondrial mas divergente.
+
+-   en el punto medio
+
+```{r}
+#| fig-width: 20
+#| fig-height: 20
+mt_nj    <-    NJ(dist.dna(as.DNAbin(mtdna), model = 'F81', gamma = 0.93))
+mt_upgma <- upgma(dist.dna(as.DNAbin(mtdna), model = 'F81', gamma = 0.93))
+mt_nj_rooted <- midpoint(mt_nj)
+plot(mt_nj_rooted, align.tip.label = TRUE, main = 'NJ, enraizado en punto medio')
+nodelabels(frame = 'none')
+add.scale.bar()
+
+```
 
 #maxima verosimilitud
 
@@ -119,7 +172,7 @@ homo <- extract.clade(mt_ml, 62)
 plot(midpoint(homo))
 ```
 
-#datación de puntos
+#datación de hojas
 
 ```{r}
 fechas <- c(0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -130,7 +183,83 @@ fechas <- c(0, 0, 0, 0, 0, 0, 0, 0, 0,
               -50000, -82752, -65000, -122287, -110450,
               0, 0, 0, 0, 0, 0, 0, 0, 0)
 setNames(fechas, names(mtdna))
+fechas <- setNames(fechas, mt_nj$tip.label)
+fechas
 ```
+
+```{r}
+#| fig-width: 10
+#| fig-height: 10
+mt_nj_rtt <- rtt(mt_nj, tip.dates = fechas, objective = 'rms')
+plot(mt_nj_rtt)
+```
+
+EJERCICIO: ¿Se corresponden bien las distancias evolutivas estimadas con las dataciones? ¿Qué secuencias crees que se ajustan menos a su supuesta edad? ¿Qué razones puede haber para que la edad de una secuencia no se corresponda con la cantidad de cambios que ha acumulado?
+
+Llama la atención los denisovanos que son los que menos se corresponden con su edad real (tienen más mutaciones acumuladas que los humnos actuales) se puede deber a errores de dataciones, que hay algunos fosiles con dataciones que son bastante imprecisas. por otra parte, estas secuencias podrían tener mutaciones originadas por fragmentación y desaminación de timinas que se estan teniendo en cuenta y que son mutaciones de la degradación.
+
+# distancias
+
+```{r}
+distMat <- as.matrix(distancias)
+```
+
+```{r}
+# Esto son vectores lógicos que podemos usar después para seleccionar filas
+# y columnas de la matriz de distancias.
+modernos     <- startsWith(colnames(distMat), 'H.s.modern')
+neandertales <- startsWith(colnames(distMat), 'H.s.neandertal')
+denisovanos  <- startsWith(colnames(distMat), 'H.s.denisova')
+chimpances   <- startsWith(colnames(distMat), 'P.troglodytes')
+bonobos      <- startsWith(colnames(distMat), 'P.paniscus')
+```
+
+```{r}
+mean(distMat[modernos, neandertales])
+```
+
+EJERCICIO:
+
+Calcula las distancias medias entre todos los grupos. Se han de comparar dos a dos por lo que por ejemplo se haría:
+
+```{r}
+distMat[bonobos, chimpances]
+z <- distMat[bonobos, chimpances]
+z[z == 0] <- NA
+mean(z, na.rm = TRUE)
+```
+
+¿Cuántas veces mayor es la distancia entre humanos y chimpancés que entre humanos y neandertales?
+
+```{r}
+distMat[modernos, chimpances]
+z <- distMat[modernos, chimpances]
+z[z == 0] <- NA
+mean(z, na.rm = TRUE)
+```
+
+```{r}
+distMat[modernos, neandertales]
+z <- distMat[modernos, neandertales]
+z[z == 0] <- NA
+mean(z, na.rm = TRUE)
+```
+
+La distancia entre humanos y chimpances es 7.497561 mayor que la distancia entre humanos y neandertales (determinado en la consola 0.09104153/0.01214282)
+
+¿Cómo calcularías la distancia media entre dos secuencias de humanos modernos?
+
+```{r}
+distMat[modernos, modernos]
+z <- distMat[modernos, modernos]
+z[z == 0] <- NA
+mean(z, na.rm = TRUE)
+```
+
+```{r}
+distCofen <- cophenetic(mt_nj_rooted)
+```
+
 
 ```{r}
 fit_td <- pml_bb(mtdna, model = 'GTR+G(4)+I', method = 'tipdated',
@@ -150,9 +279,5 @@ estimate.mu() nos ayuda a datar los nodos y las puntas y si pongo dates en vez d
 ```{r}
 estimate.mu(mt_nj, fechas, p.tol = 0.05)
 ```
+
 esto es la tasa de cambio por cada posicion y unidad de tiempo (años) hay 1.75024e-07 sustituciones por posición y por años.
-
-
-
-
-
