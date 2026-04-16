@@ -1,0 +1,149 @@
+---
+title: "practica10"
+format: html
+editor: visual
+---
+
+#Revision de los datos
+
+¿Cuántas secuencias contiene el archivo? El archivo tiene un total de 13812 secuencias. El programa se ha basado en que cada una de ellas empeza con el simbolo ">". zgrep hace lo mismo que el grep, q es mirar linea por linea lo que ponemos estre comillas, en este caso que empiecen con >, pero con archivos comprimidos
+
+```{bash}
+zgrep -c "^>" ../../data/At4.10.fa.gz
+```
+
+¿Qué longitudes mínima, media y máxima tienen las secuencias? La longuitud minima es de 2942pb, la longitud maxima es de 59075 y la media es de 18143,6pb.
+
+n++ suma una unidad cada vez que encuentra un ejemplo de la condicion establecida anteriormente.
+```{bash}
+zcat ../../data/At4.10.fa.gz | awk '
+BEGIN {min=1e12; max=0; sum=0; len=0; n=0}
+{
+  if ($0 ~ /^>/) {
+    if (len > 0) {
+      if (len < min) min = len
+      if (len > max) max = len
+      sum += len
+      n++
+    }
+    len = 0
+  } else {
+    len += length($0)
+  }
+}
+END {
+  # última secuencia
+  if (len > 0) {
+    if (len < min) min = len
+    if (len > max) max = len
+    sum += len
+    n++
+  }
+  print "Secuencias:", n
+  print "Longitud mínima:", min
+  print "Longitud media:", sum/n
+  print "Longitud máxima:", max
+}'
+```
+otra opcion es
+
+```{bash}
+zcat ../../data/At4.10.fa.gz | awk '/^>/ {if (seqlen) {print seqlen}; seqlen=0; next} {seqlen += length($0)} END {print seqlen}' > lengths.txt
+# Número mínimo
+sort -n lengths.txt | head -1
+
+# Número máximo
+sort -n lengths.txt | tail -1
+
+# Número medio
+awk '{sum+=$1} END {print sum/NR}' lengths.txt
+
+```
+
+¿Cuál es el número total de bases? El numero total de bases es de 250599484.
+
+```{bash}
+awk '{sum+=$1} END {print sum}' lengths.txt
+```
+
+Si se estimara que el genoma a ensamblar fuera de sólo 19 millones de bases, ¿cuál sería la cobertura esperada?
+Para calcular la cobertura se establece el numero de bases y el total del genoma y se divide el numero total de bases entre el genoma 
+```{bash}
+total_bases=$(awk '{sum+=$1} END {print sum}' lengths.txt)
+genome_size=19000000
+echo "scale=2; $total_bases / $genome_size" | bc
+```
+13 deberia se una buena cobertura pero el problema es que la distribucion por lo que puede ser que algunos fragmentos no se hayan leido ni una vez. lo mejor seria 30 y en eucariotas diploides 60.
+
+#Ensamblaje
+
+```{bash}
+# Con la ejecución condicional nos ahorramos algún mensaje de error:
+if [ ! -d asm1 ]; then mkdir asm1; fi
+```
+-d es existe la carpeta y -e que sal mas adelante en la practica signfica existe el archivo.
+```{bash}
+export PATH=$PATH:~/bin/hifiasm 
+if [ ! -e asm1/At4.bp.p_ctg.gfa ]; then
+   hifiasm -o asm1/At4 -t 2 -f 0 ../../data/At4.10.fa.gz 2> asm1/hifiasm.log
+fi
+```
+
+¿Los parámetros corresponden al ensamblaje de un genoma haploide o diploide?
+
+hifiasm está diseñado principalmente para genomas diploides. LO sabemos puesto que geera dos ensamblajes uno primario, p_ctg y uno alternativo o haploide, a_ctgque implementa la resolucion de los haplotips basandose en su heterocigosidad.
+   
+¿Qué nivel de eliminación de duplicaciones hemos aplicado? (El paso de eliminar duplicaciones sirve para que las zonas de alta heterocigosidad no sean ensambladas como contigs diferentes).
+
+hifiasm aplica automáticamente una purga moderada estándar. Esta purga elimina duplicaciones debidas a heterocigosidad, pero sin ser extrema. ESte comportamiento esta controlados por parametros, como -l,que hace referencia a la longitudminima de la purga y -s sensibilidad para separacion de haplotipos. Sin embargo, se podrian modificar determinados parametros para hacer una purga mas o mnos radical.
+    
+Si tuvieramos lecturas ultra-largas, ¿con qué opción o argumento añadiríamos esa información?
+
+--ul permite incorporar lecturas ultra-largas.
+
+#Evaluación del resultado
+
+¿Dónde están las secuencias que componen el ensamblaje?
+
+Las secuencias del ensamblaje están en los archivos .gfa, concretamente en las líneas de tipo S donde aparece: el identificador del contig y la secuencia nucleotídica
+
+En los archivos .gfa, ¿qué son las líneas que empiezan por ‘A’?
+
+Las líneas A contienen información de alineamiento de las lecturas que construyen cada contig/unitig. incluyen:
+
+nombre del contig
+posición en el contig
+hebra (+/-)
+nombre de la lectura
+coordenadas de la lectura
+ID de la lectura
+estado de haplotipo
+
+¿Qué información tiene los archivos .bed?
+
+los archivos .bed (por ejemplo *lowQ.bed) contienen coordenadas de regiones de baja calidad en el ensamblaje, indican posiciones en los contigs y marcan zonas potencialmente problemáticas.
+
+¿Cuál es la cobertura media estimada de las secuencias homocigotas?
+
+Cobertura homocigota ≈ 57× (corresponde al pico alto del gráfico de k-mers)
+
+en nuestro caso, si miramos el archivo hifiasm.log, el pico esta en 12
+¿Y la de las heterocigotas?
+
+Cobertura heterocigota ≈ 28× (corresponde al pico más bajo del gráfico de k-mers)
+en nuestro caso, si miramos el archivo hifiasm.log, no hay pico en 6 que es donde se esperaria. se entiende que al seruna planta cuyo ecotipo es utilizado como control sera homocigota.
+
+```{bash}
+awk '(/^S/){print ">" $2 "\n" $3}' asm1/At4.bp.p_ctg.gfa > asm1/At4.fa
+```
+
+#Calidad del ensamblaje
+
+
+
+
+
+
+
+
+
