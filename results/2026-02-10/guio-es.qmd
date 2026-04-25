@@ -75,6 +75,19 @@ a la salida estándar (no a un archivo nuevo), de donde `less -S` lo lee, sin
 modificar nada en la carpeta. ¿Sabrías contar el número de líneas de cada archivo?
 :::
 
+```{bash}
+zcat DRR025089_1.fastq.gz | wc -l
+```
+Cada lectura en FASTAQ ocupa 4 líneas así al resultado obtenido con el comando anterior habría que dividirlo entre 4.
+
+Así pues, se puede hacer más fácil si ordenamos que cuente las líneas que empiezan por "x". en este caso se podría hacer por el simbolo @ o en el caso de FASTA por >.
+```{bash}
+zcat DRR025089_2.fastq.gz | grep "^@" | wc -l
+```
+
+De esta menera ambos archivos tienen un total de 1646728 de líneas y 415725 de lecturas.
+
+
 Necesitaremos también el genoma de referencia de `Bradyrhizobium japonicum`.
 Usaremos el de la cepa ACCC 15027 (hay otros).
 
@@ -90,9 +103,26 @@ fi
 :::{.callout-note icon=false}
 ## Preguntas
 - ¿Crees que deberíamos guardar los archivos descargados en `../../data`?
+Sí, creo que se odrían guardar en data puesto que son elementos descargados que no he generado yo. Eso si deberíamos modificar las ordenes anteriores, puesto que hemos establecido la carpeta con la fecha de hoy como working directory. Si el archivo que estoy modificando, en este caso el guion.qmd, no esta en la misma carpeta que mis datos, estas secuencias FASTAQ, no se va a ejecutar si yo no indico donde esta. Dada la organización de las carpetas deberiamos indicar que hay que hay que salir de la carpeta actual, dos veces, hasta bioinfo y alli meternos en data: zcat ../../data/DRR025089_2.fastq.gz | grep "^@" | wc -l
+
 - ¿Cómo podrías guardar los mensajes de `wget` en un archivo?
-- ¿De cuántas secuencias diferentes se compone este genoma de referencia?
+
+wget es un comando que sirve para descargar archivos desde internet directamente desde la terminal al darle la URL.
+```{bash}
+wget URL -o log.txt
+```
+
+- ¿De cuántas secuencias diferentes se compone este genoma de referencia? 
+
+3 secuencias en este archivo
+
+```{bash}
+grep "^>" referencia.fa  | wc -l
+```
+
 :::
+
+Archivos .fa o .fasta no son archivos comprimidos, los archivos comprimidos son .fa.gz o .fasta.gz
 
 # Control de calidad
 
@@ -113,8 +143,15 @@ fi
 ## Ejercicios
 1. Revisa la ayuda del programa ejecutando `fastp -h`, y asegúrate de entender
    al menos las opciones que hemos usado.
+   
+   fastp es una herramienta que funciona como control de calidad de lecturas FASTQ, filtrar lecturas malas y generar informes en formato .html. -i, es el input, es la entrada, es decir, es lo que le doy yo para revisar, en este caso el archivo de secuencias descargado. Por el contrario -o es el output, la salida, lo que me da como resultado de ese filtrado o la revisión.  En el caso de las mayúsculas, la I sigue indicando input y la O output, sin embargo las minúsculas indican que son lecturas forward y las mayúsculas son las lecturas reverse en lecturas emparejadas (paired-end). Así pues, R1 son las forward (-i y -o) y R2 son lasss reverse (-I y -O). En caso de tener single-end solo habría una lectura por fragmento por lo que solo usaríamos las minúsculas. El archivo .html es un informe visual del control de calidad.
+   
+   
 2. Revisa el informe generado por `fastp` en el archivo `fastp.html` y redacta un
    pequeño resumen de las principales conclusiones que sacas.
+   
+   En el informe se indican que los datos corresponden a una secuenciación de lecturas emparejadas, de 251 ciclos y 251 ciclos, lo que indica que son de alta resolucion y podrrían ser de Illumina. La longitud media de las lecturas es de 217pb, puesto que se han eliminado lecturas de baja calidad. Además, nos indican la calidad de las bases, entre Q20 y Q30, la mayoría de bases presentan valores altos de calidad, son datos fiables. También se indica el ratio de duplicación de lecturas, aproximadamente de 0,15%, lo cual es un buen indicador. Además de la calidad por lectura R1 y R2.
+   
 3. Descarga un segundo conjunto de archivos FASTQ de la misma especie y repite
    el análisis de calidad con ellos. Puedes ver algunas opciones en
    [este enlace](https://www.ebi.ac.uk/ena/browser/advanced-search?result=read_run&query=study_accession%3D%22PRJDB3261%22&fields=run_accession%2Cexperiment_title%2Cstudy_accession%2Cfastq_bytes%2Cfastq_ftp%2Cscientific_name%2Cfirst_public&excludeAccessionType=run&excludeAccessions=DRR025089).
@@ -158,14 +195,73 @@ fi
 1. Entre las órdenes anteriores, añade la descarga del genoma de referencia
    en el lugar adecuado y bajo la condición adecuada para que pueda borrarse
    una vez se haya generado el alineamiento.
+   
+```{bash}
+if [ ! -e DRR025089.bam ]; then
+
+   if [ ! -e referencia.fa ]; then
+   wget -o /dev/null -O referencia.fa \
+        https://www.ebi.ac.uk/ena/browser/api/fasta/GCA_042137995.2 
+   fi
+   if [ ! -e DRR025089_unsorted.bam ]; then
+      if [ ! -e DRR025089.sam ]; then
+         if [ ! -e referencia.fa.bwt ]; then
+            bwa index referencia.fa
+         fi
+         bwa mem -M -R '@RG\tID:DRR025089\tSM:SAMD00022947' \
+                 -o DRR025089.sam \
+                 referencia.fa \
+                 DRR025089_1_clean.fastq \
+                 DRR025089_2_clean.fastq \
+         1> bwa.log 2> bwa.err
+      fi
+      samtools view -b -o DRR025089_unsorted.bam DRR025089.sam
+    fi
+    samtools sort -o DRR025089.bam DRR025089_unsorted.bam
+    samtools index DRR025089.bam
+    
+    rm -f DRR025089_unsorted.bam referencia.fa referencia.fa*
+fi
+```
+   
+   
 2. En un bloque de órdenes nuevo, alinea también los pares de lecturas cortas
    que `fastp` había combinado (`DR025089_m_clean.fastq`).
+   
+```{bash}
+if [ ! -e DRR025089_merged.bam ]; then
+
+   if [ ! -e referencia.fa ]; then
+   wget -o /dev/null -O referencia.fa \
+        https://www.ebi.ac.uk/ena/browser/api/fasta/GCA_042137995.2 
+   fi
+   if [ ! -e referencia.fa.bwt ]; then
+      bwa index referencia.fa
+   fi
+  
+   bwa mem referencia.fa DRR025089_m_clean.fastq \
+   samtools view -b - \
+   samtools sort -o DRR025089_merged.bam
+   samtools index DRR025089_merged.bam
+   rm -f referencia.fa referencia.fa.*
+   
+fi   
+```
+   
 3. Lee la lista de funciones que te ofrece `samtools` al ejecutarlo sin ningún
    argumento. ¿Qué función usarías para combinar dos archvivos BAM en uno?
+   
+ Utilizaría samtools merge. En esta orden hay que poner justo a continuación el nombre del archivo que nos genere fruto de la combinación, y seguido el nombre de los dos archivos a combinar.
+ 
 3. ¿Cuánto espacio de disco ocupan los archivos FASTQ, el genoma de referencia y
    su índice y el archivo SAM?
+   
+```{bash}
+du -h DRR025089*.fastq.gz referencia.fa referencia.fa.* DRR025089.sam
+```
+   
 4. Podíamos haber ahorrado algún paso aprovechando las *tuberías* de BASH:
-
+Sí, es más rápido puesto que requiere de menos escritura las ordenes.
 ```
 bwa mem -M -R '@RG\tID:DRR025089\tSM:SAMD00022947' \
         referencia.fa DRR025089_1_clean.fastq DRR025089_2_clean.fastq | \
@@ -175,6 +271,8 @@ samtools sort - > DRR025089.bam
 
   Este estilo tiene también la ventaja de ser más rápido. ¿Crees que hay algún
   inconveniente al usar las tuberías?
+  
+  No se pueden revisar resultados intemedios como el SAM, no se pueden validar los resultados paso a paso, si algo falla no sabes exactamente donde esta el problema y hay que repetirlo otra vez, no se puede usar una parte solo del proceso, etc.
 :::
 
 Antes de proseguir, es importante comprobar el resultado del paso anterior.
@@ -204,12 +302,32 @@ plot(COV$cobertura, COV$bases, type = 'l')
 ## Desafíos
 1. La distribución de cobertura tiene una cola larga. ¿Puedes centrar la
    representación gráfica entre 0 y 20? Pista: usa la opción `xlim` de `plot()`.
+```{r}
+plot(COV$cobertura, COV$bases, type = 'l', xlim = c(0, 20))
+```
+
 2. ¿Qué otras estadísticas crees que vale la pena revisar?
+
+Con samtools stats puedes analizar el porcentaje de lecturas mapeadas, calidad del mapeo, duplicados, distribución de longitud de insertos, errores, etc.
+
 3. El genoma de referencia incluye dos plásmidos. ¿La cepa secuenciada los tiene?
+```{bash}
+samtools idxstats referencia.fa
+```
+
+
+```{bash}
+samtools idxstats DRR025089.bam
+```
+La primera fila corresponde al cromosoma principal, el primer número es 9460647, este representa las lecturas. 9.4 Mb, bien representado. Sin embargo, en las otras dos columnas hay muy pocas lecturas, 440 kb y 122 kb. Los plasmidos presentan muy baja cobertura.                                                      
 4. Visualiza los alineamientos en el terminal con la orden siguiente:
 ```
 samtools tview DRR025089.bam referencia.fa
 ```
+```{bash}
+samtools tview DRR025089.bam referencia.fa
+```
+
 :::
 
 # Identificación de variantes
