@@ -6,7 +6,7 @@ execute:
   output: true
   error: true
 engine: knitr
-bibliography: ../../references.bib
+bibliography: ../../doc/references.bib
 language:
    title-block-published: "Última actualización:"
    section-title-references: "Bibliografía"
@@ -324,9 +324,7 @@ La primera fila corresponde al cromosoma principal, el primer número es 9460647
 ```
 samtools tview DRR025089.bam referencia.fa
 ```
-```{bash}
-samtools tview DRR025089.bam referencia.fa
-```
+
 
 :::
 
