@@ -40,7 +40,7 @@ En cada una de estas carpetas se incluye:
  - 2026-03-26: Práctica 9. Reconstrucción filogenética
  - 2026-04-16: Práctica 10. Ensamblaje de genomas.
  - 2026-04-21: Práctica 11. Anotación.
- - 2026-04-21: Práctica 12. Análisis de expresión diferencial.
+ - 2026-04-27: Práctica 12. Análisis de expresión diferencial.
 
 # Información adicional
 
