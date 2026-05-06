@@ -1,7 +1,17 @@
 ---
 title: "Práctica 8.BLAST"
-format: html
 editor: visual
+execute: 
+  output: false
+  error: true
+engine: knitr
+bibliography: ../../doc/references.bib
+language:
+   title-block-published: "Última actualización:"
+   section-title-references: "Bibliografía"
+format:
+   html:
+      embed-resources: true
 ---
 
 ## Ejercicio 1
@@ -77,6 +87,7 @@ psiblast -db ../../data/swissprot \
          -num_iterations 7 \
          -matrix BLOSUM62
 ```
+
 ahora lo mismo para otra proteina
 
 ```{bash}
@@ -96,11 +107,6 @@ psiblast -db ../../data/swissprot \
 ```
 
 NOTA: Consulta la ayuda de psiblast y asegúrate de entender para qué sirven los argumentos que hemos usado. Por ejemplo, ¿cuál es la diferencia entre -evalue y -inclusion_ethresh?¿Cómo harías que la búsqueda fuera más sensible todavía?
-
-
-
-
-
 
 ## Ejercicio 3
 
@@ -125,6 +131,7 @@ if [ ! -e resultado.txt ]; then
           -remote 
 fi
 ```
+
 le hemos puesto un e value tan retrictivo que en un conjuno tan variado de organismos no ha encontrado ninguna, por eso e archivo es de 0B, la semejanza de las proteinas de la superfamilia es bastante debil.
 
 para hacer lo ismo con las demas se haria: for proteina in el nombre de todas las proteinas; do. hay que poner el dolar delante de proteina para que lo entienda como una variable.
