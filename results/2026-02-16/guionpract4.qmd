@@ -6,7 +6,7 @@ execute:
   output: false
   error: true
 engine: knitr
-bibliography: ../../references.bib
+bibliography: ../../doc/references.bib
 language:
    title-block-published: "Última actualización:"
    section-title-references: "Bibliografía"
@@ -54,7 +54,7 @@ HTML en un formato adecuado.
 library('kableExtra')
 genomas <- read.table('trypanosoma_annotated.txt',
                       header = TRUE, sep = '\t')
-kable(genomas) %>% kable_styling()
+kable(genomas) 
 ```
 
 :::{.callout-note icon=false}
@@ -82,7 +82,7 @@ llamada `Assembly.Release.Date`.
 # Observa que asignamos el resultado del ordenamiento al mismo objeto que
 # estamos ordenando, para guardar el resultado sin tener que generar otro objeto.
 genomas <- genomas[order(genomas$Assembly.Release.Date), ]
-kable(genomas) %>% kable_styling()
+kable(genomas) 
 ```
 
 Casualmente, la fecha estaba en formato "%Y-%m-%d", en el que el orden alfabético
