@@ -1,7 +1,18 @@
 ---
 title: "practica11"
-format: html
 editor: visual
+execute: 
+  output: false
+  error: true
+engine: knitr
+bibliography: ../../doc/references.bib
+language:
+   title-block-published: "Última actualización:"
+   section-title-references: "Bibliografía"  
+format:
+   html:
+      embed-resources: true
+
 ---
 
 ## Introducción
@@ -9,12 +20,14 @@ editor: visual
 vamos a trabajar con los resultados de la anotación estructural realizada sobre el ensamblaje de la práctica anterior.Pero a continuación se muestran las órdenes que en un terminal de Bash producirían los resultados. Estas órdenes se supone que son ejecutadas desde una carpeta results/2026-04-21.
 
 ## Datos
+
 Las secuencias que vamos a anotar son el ensamblaje obtenido en la práctica anterior, que voy a suponer que se encuentran en una carpeta results/2026-04-16.Estas secuencias son 6023 proteínas del cromosoma 4 de Arabidopsis thalina, descargadas de Uniprot.
 
 ## Resultados
 
 # Modificar cabeceras
-Al descargar las proteínas del cromosoma 4 de A. thaliana, el archivo FASTA contiene cabeceras demasiado extensas. Para facilitar el trabajo de GALBA vamos a modificar las cabeceras o nombres de las secuencias. 
+
+Al descargar las proteínas del cromosoma 4 de A. thaliana, el archivo FASTA contiene cabeceras demasiado extensas. Para facilitar el trabajo de GALBA vamos a modificar las cabeceras o nombres de las secuencias.
 
 HAY QUE DECOMPRIMIRLO, NUNCA FASTA.GZ
 
@@ -25,6 +38,7 @@ fi
 ```
 
 # Análisis de los resultados de RepeatModeler
+
 RepeatModeler fue ejecutado de la manera siguiente:
 
 ```{bash}
@@ -33,31 +47,20 @@ BuildDatabase -name At4 ../2026-04-16/asm1/At4.fa
 
 RepeatModeler -database At4 -threads 6 >& run.log
 ```
-Puedes descargar y descomprimir los resultados de RepeatModeler desde el aula virtual a la carpeta de trabajo actual (como si fueran resultados tuyos). Encontrarás la estructura de archivos siguiente:
-.
-├── At4-families.fa               
-├── At4-families.stk   
-├── At4.nhr                     
-├── At4.nin                           
-├── At4.njs                           
-├── At4.nnd                              
-├── At4.nni               
-├── At4.nog              
-├── At4.nsq              
-├── At4-rmod.log
-├── At4.translation 
-├── RM_358880.MonApr202033152026    NOTA: nosotros no tenemos las subcarpetas dentro de "RM_358880.MonApr202033152026"
-│   ├── consensi.fa
-│   ├── families.stk
-│   ├── genome.2bit
-│   ├── rmod.log
-│   ├── round-1
-│   ├── round-2
-│   └── round-3
-└── run.log
 
+Puedes descargar y descomprimir los resultados de RepeatModeler desde el aula virtual a la carpeta de trabajo actual (como si fueran resultados tuyos). Encontrarás la estructura de archivos siguiente: . ├── At4-families.fa\
+├── At4-families.stk\
+├── At4.nhr\
+├── At4.nin\
+├── At4.njs\
+├── At4.nnd\
+├── At4.nni\
+├── At4.nog\
+├── At4.nsq\
+├── At4-rmod.log ├── At4.translation ├── RM_358880.MonApr202033152026 NOTA: nosotros no tenemos las subcarpetas dentro de "RM_358880.MonApr202033152026" │ ├── consensi.fa │ ├── families.stk │ ├── genome.2bit │ ├── rmod.log │ ├── round-1 │ ├── round-2 │ └── round-3 └── run.log
 
 # Ejercicio 2
+
 Explora los resultados de RepeatModeler y trata de contestar las preguntas siguientes.
 
 ¿Cuántas familias de elementos transponibles se han encontrado?
@@ -65,13 +68,15 @@ Explora los resultados de RepeatModeler y trata de contestar las preguntas sigui
 ```{bash}
 grep -c "^>" RepeatModelerResults/At4-families.fa
 ```
-Como en prácticas anteriores, para contar secuencias fasta, ultilizamos la orden de contar todo lo que empieza con >, número de cabeceras que empiezan con >.
 
-¿Cuánto duró la ejecución del programa?
-al final de todo sale Program Time: 01:02:16 (hh:mm:ss) Elapsed Time, hace la suma de todas las rondas que hace
+Como en prácticas anteriores, para contar secuencias fasta, ultilizamos la orden de contar todo lo que empieza con \>, número de cabeceras que empiezan con \>.
+
+¿Cuánto duró la ejecución del programa? al final de todo sale Program Time: 01:02:16 (hh:mm:ss) Elapsed Time, hace la suma de todas las rondas que hace
+
 ```{bash}
 less RepeatModelerResults/run.log
 ```
+
 en el archivo llamadostk, estocolmo, tendra unas cuantas secuencias de diferentes familias. si representamos esto en diagramas de cajas nos saldran los diferentes tipos de elementos transponibles del RepeatModeler.
 
 ¿Cuál dirías que es el archivo de salida más importante?
@@ -79,6 +84,7 @@ en el archivo llamadostk, estocolmo, tendra unas cuantas secuencias de diferente
 SOLUCION: galba.gtf es el mas importante indica las secuencias codificantes, inicio y final de las mismas, a que gen pertenec, que cadena es.
 
 # Suavizar la máscara
+
 RepeatMasker fue ejecutado así:
 
 ```{bash}
@@ -87,10 +93,7 @@ RepeatMasker -lib At4-families.fa -dir RM01 -gtf ../../data/At4.fa
 
 Encontrarás la carpeta (comprimida) de resultados de RepeatMasker en el aula virtual. Descárgala y descomprimela en la carpeta de trabajo actual.
 
-El programa GALBA recomienda partir de un ensamblaje con máscara suave, donde las regiones repetitivas están marcadas con letra minúscula. Para convertir la máscara dura en una máscara suave, utilizaremos bedtools.
-GALBA pertenece a los scrips de pearl, casi casi olvidado, al contrario que breaker. existe una version dos pero es muy dificil de instalar, se necesita singularity, se dice que es probable que la inteligencia artificial sea la erramienra del futuro para este tipo de analisis. GALBA funciona bien si son especies muy carcanas pero no si son varias del mismo genero.
-# Ejercicio 3
-Instala el programa bedtools siguiendo las instrucciones oportunas para tu sistema en la página oficial
+El programa GALBA recomienda partir de un ensamblaje con máscara suave, donde las regiones repetitivas están marcadas con letra minúscula. Para convertir la máscara dura en una máscara suave, utilizaremos bedtools. GALBA pertenece a los scrips de pearl, casi casi olvidado, al contrario que breaker. existe una version dos pero es muy dificil de instalar, se necesita singularity, se dice que es probable que la inteligencia artificial sea la erramienra del futuro para este tipo de analisis. GALBA funciona bien si son especies muy carcanas pero no si son varias del mismo genero. \# Ejercicio 3 Instala el programa bedtools siguiendo las instrucciones oportunas para tu sistema en la página oficial
 
 ```{bash}
 export PATH=$PATH:~/bin/bedtools2/bin
@@ -102,9 +105,7 @@ bedtools maskfasta -fi ../2026-04-16/asm1/At4.fa \
 
 Utiliza el ensamblaje original como archivo FASTA de entrada y el archivo GFF que ha producido RepetaMasker como coordenadas de las regiones a enmascarar. Lee el manual de bedtools maskfasta en este enlace y genera el ensamblaje con máscara suave llamado At4.soft.fa.
 
-
-#GALBA
-Para ejecutar GALBA ha sido necesario crear algunas variables de entorno que indican donde puede GALBA encontrar un par de ejecutables más. Para facilitar la reproducibilidad, este tipo de definiciones deben aparecer al principio del bloque, donde son más visibles, para que sean fácilmente modificadas cuando las órdenes vayan a ejecutarse en otro ordenador.
+#GALBA Para ejecutar GALBA ha sido necesario crear algunas variables de entorno que indican donde puede GALBA encontrar un par de ejecutables más. Para facilitar la reproducibilidad, este tipo de definiciones deben aparecer al principio del bloque, donde son más visibles, para que sean fácilmente modificadas cuando las órdenes vayan a ejecutarse en otro ordenador.
 
 ```{bash}
 export TSEBRA_PATH=/home/joiglu/bin/TSEBRA/bin/
@@ -118,24 +119,3 @@ galba.pl --species="Arabidopsis thaliana" \
 # Ejercicio 4
 
 Incluye en tu documento de Quarto un bloque de código (pero no ejecutable, con la opción eval: false) como el anterior, donde los caminos TSERBA y a MINIPROTHINT se correspondan con tu propia carpeta bin, aunque no los tengas instalados.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
