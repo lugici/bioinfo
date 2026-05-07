@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>practica11</title>
+<title>practica10</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -2207,7 +2207,7 @@ vertical-align: -.125em;
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">practica11</h1>
+<h1 class="title">practica10</h1>
 </div>
 
 
@@ -2224,93 +2224,100 @@ vertical-align: -.125em;
 </header>
 
 
-<section id="introducción" class="level2">
-<h2 class="anchored" data-anchor-id="introducción">Introducción</h2>
-<p>vamos a trabajar con los resultados de la anotación estructural realizada sobre el ensamblaje de la práctica anterior.Pero a continuación se muestran las órdenes que en un terminal de Bash producirían los resultados. Estas órdenes se supone que son ejecutadas desde una carpeta results/2026-04-21.</p>
-</section>
-<section id="datos" class="level2">
-<h2 class="anchored" data-anchor-id="datos">Datos</h2>
-<p>Las secuencias que vamos a anotar son el ensamblaje obtenido en la práctica anterior, que voy a suponer que se encuentran en una carpeta results/2026-04-16.Estas secuencias son 6023 proteínas del cromosoma 4 de Arabidopsis thalina, descargadas de Uniprot.</p>
-</section>
-<section id="resultados" class="level2">
-<h2 class="anchored" data-anchor-id="resultados">Resultados</h2>
-</section>
-<section id="modificar-cabeceras" class="level1">
-<h1>Modificar cabeceras</h1>
-<p>Al descargar las proteínas del cromosoma 4 de A. thaliana, el archivo FASTA contiene cabeceras demasiado extensas. Para facilitar el trabajo de GALBA vamos a modificar las cabeceras o nombres de las secuencias.</p>
-<p>HAY QUE DECOMPRIMIRLO, NUNCA FASTA.GZ</p>
+<p>#Revision de los datos</p>
+<p>¿Cuántas secuencias contiene el archivo? El archivo tiene un total de 13812 secuencias. El programa se ha basado en que cada una de ellas empeza con el simbolo “&gt;”. zgrep hace lo mismo que el grep, q es mirar linea por linea lo que ponemos estre comillas, en este caso que empiecen con &gt;, pero con archivos comprimidos</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-e</span> proteinas.fasta <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">awk</span> <span class="st">&#39;(/^&gt;/){split($1, A, /\|/); print &quot;&gt;&quot; A[2]}(/^[^&gt;]/){print $0}&#39;</span> ../../data/uniprotkb.fasta <span class="op">&gt;</span> proteinas.fasta</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zgrep</span> <span class="at">-c</span> <span class="st">&quot;^&gt;&quot;</span> ../../data/At4.10.fa.gz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section>
-<section id="análisis-de-los-resultados-de-repeatmodeler" class="level1">
-<h1>Análisis de los resultados de RepeatModeler</h1>
-<p>RepeatModeler fue ejecutado de la manera siguiente:</p>
+<p>¿Qué longitudes mínima, media y máxima tienen las secuencias? La longuitud minima es de 2942pb, la longitud maxima es de 59075 y la media es de 18143,6pb.</p>
+<p>n++ suma una unidad cada vez que encuentra un ejemplo de la condicion establecida anteriormente.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Paso previo para convertir el ensamblaje en una base de datos de BLAST:</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">BuildDatabase</span> <span class="at">-name</span> At4 ../2026-04-16/asm1/At4.fa</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">RepeatModeler</span> <span class="at">-database</span> At4 <span class="at">-threads</span> 6 <span class="op">&gt;&amp;</span> run.log</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> ../../data/At4.10.fa.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="st">BEGIN {min=1e12; max=0; sum=0; len=0; n=0}</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="st">{</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">  if ($0 ~ /^&gt;/) {</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">    if (len &gt; 0) {</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">      if (len &lt; min) min = len</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="st">      if (len &gt; max) max = len</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="st">      sum += len</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="st">      n++</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="st">    }</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="st">    len = 0</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="st">  } else {</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="st">    len += length($0)</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="st">END {</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="st">  # última secuencia</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="st">  if (len &gt; 0) {</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="st">    if (len &lt; min) min = len</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="st">    if (len &gt; max) max = len</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="st">    sum += len</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="st">    n++</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="st">  print &quot;Secuencias:&quot;, n</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="st">  print &quot;Longitud mínima:&quot;, min</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="st">  print &quot;Longitud media:&quot;, sum/n</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="st">  print &quot;Longitud máxima:&quot;, max</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="st">}&#39;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Puedes descargar y descomprimir los resultados de RepeatModeler desde el aula virtual a la carpeta de trabajo actual (como si fueran resultados tuyos). Encontrarás la estructura de archivos siguiente: . ├── At4-families.fa<br>
-├── At4-families.stk<br>
-├── At4.nhr<br>
-├── At4.nin<br>
-├── At4.njs<br>
-├── At4.nnd<br>
-├── At4.nni<br>
-├── At4.nog<br>
-├── At4.nsq<br>
-├── At4-rmod.log ├── At4.translation ├── RM_358880.MonApr202033152026 NOTA: nosotros no tenemos las subcarpetas dentro de “RM_358880.MonApr202033152026” │ ├── consensi.fa │ ├── families.stk │ ├── genome.2bit │ ├── rmod.log │ ├── round-1 │ ├── round-2 │ └── round-3 └── run.log</p>
-</section>
-<section id="ejercicio-2" class="level1">
-<h1>Ejercicio 2</h1>
-<p>Explora los resultados de RepeatModeler y trata de contestar las preguntas siguientes.</p>
-<p>¿Cuántas familias de elementos transponibles se han encontrado?</p>
+<p>otra opcion es</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">&quot;^&gt;&quot;</span> RepeatModelerResults/At4-families.fa</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> ../../data/At4.10.fa.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;/^&gt;/ {if (seqlen) {print seqlen}; seqlen=0; next} {seqlen += length($0)} END {print seqlen}&#39;</span> <span class="op">&gt;</span> lengths.txt</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Número mínimo</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> <span class="at">-n</span> lengths.txt <span class="kw">|</span> <span class="fu">head</span> <span class="at">-1</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Número máximo</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> <span class="at">-n</span> lengths.txt <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-1</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Número medio</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">&#39;{sum+=$1} END {print sum/NR}&#39;</span> lengths.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Como en prácticas anteriores, para contar secuencias fasta, ultilizamos la orden de contar todo lo que empieza con &gt;, número de cabeceras que empiezan con &gt;.</p>
-<p>¿Cuánto duró la ejecución del programa? al final de todo sale Program Time: 01:02:16 (hh:mm:ss) Elapsed Time, hace la suma de todas las rondas que hace</p>
+<p>¿Cuál es el número total de bases? El numero total de bases es de 250599484.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> RepeatModelerResults/run.log</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">&#39;{sum+=$1} END {print sum}&#39;</span> lengths.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>en el archivo llamadostk, estocolmo, tendra unas cuantas secuencias de diferentes familias. si representamos esto en diagramas de cajas nos saldran los diferentes tipos de elementos transponibles del RepeatModeler.</p>
-<p>¿Cuál dirías que es el archivo de salida más importante?</p>
-<p>SOLUCION: galba.gtf es el mas importante indica las secuencias codificantes, inicio y final de las mismas, a que gen pertenec, que cadena es.</p>
-</section>
-<section id="suavizar-la-máscara" class="level1">
-<h1>Suavizar la máscara</h1>
-<p>RepeatMasker fue ejecutado así:</p>
+<p>Si se estimara que el genoma a ensamblar fuera de sólo 19 millones de bases, ¿cuál sería la cobertura esperada? Para calcular la cobertura se establece el numero de bases y el total del genoma y se divide el numero total de bases entre el genoma</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">RepeatMasker</span> <span class="at">-lib</span> At4-families.fa <span class="at">-dir</span> RM01 <span class="at">-gtf</span> ../../data/At4.fa</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">total_bases</span><span class="op">=</span><span class="va">$(</span><span class="fu">awk</span> <span class="st">&#39;{sum+=$1} END {print sum}&#39;</span> lengths.txt<span class="va">)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="va">genome_size</span><span class="op">=</span>19000000</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;scale=2; </span><span class="va">$total_bases</span><span class="st"> / </span><span class="va">$genome_size</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="fu">bc</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Encontrarás la carpeta (comprimida) de resultados de RepeatMasker en el aula virtual. Descárgala y descomprimela en la carpeta de trabajo actual.</p>
-<p>El programa GALBA recomienda partir de un ensamblaje con máscara suave, donde las regiones repetitivas están marcadas con letra minúscula. Para convertir la máscara dura en una máscara suave, utilizaremos bedtools. GALBA pertenece a los scrips de pearl, casi casi olvidado, al contrario que breaker. existe una version dos pero es muy dificil de instalar, se necesita singularity, se dice que es probable que la inteligencia artificial sea la erramienra del futuro para este tipo de analisis. GALBA funciona bien si son especies muy carcanas pero no si son varias del mismo genero. # Ejercicio 3 Instala el programa bedtools siguiendo las instrucciones oportunas para tu sistema en la página oficial</p>
+<p>13 deberia se una buena cobertura pero el problema es que la distribucion por lo que puede ser que algunos fragmentos no se hayan leido ni una vez. lo mejor seria 30 y en eucariotas diploides 60.</p>
+<p>#Ensamblaje</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="va">$PATH</span>:~/bin/bedtools2/bin</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bedtools</span> maskfasta <span class="at">-fi</span> ../2026-04-16/asm1/At4.fa <span class="dt">\</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>-fo At4.soft.fa <span class="dt">\</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>-bed RepeatMaskerResults/RM01/At4.fa.out.gff <span class="dt">\</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>-soft </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Con la ejecución condicional nos ahorramos algún mensaje de error:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-d</span> asm1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span> <span class="fu">mkdir</span> asm1<span class="kw">;</span> <span class="cf">fi</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Utiliza el ensamblaje original como archivo FASTA de entrada y el archivo GFF que ha producido RepetaMasker como coordenadas de las regiones a enmascarar. Lee el manual de bedtools maskfasta en este enlace y genera el ensamblaje con máscara suave llamado At4.soft.fa.</p>
-<p>#GALBA Para ejecutar GALBA ha sido necesario crear algunas variables de entorno que indican donde puede GALBA encontrar un par de ejecutables más. Para facilitar la reproducibilidad, este tipo de definiciones deben aparecer al principio del bloque, donde son más visibles, para que sean fácilmente modificadas cuando las órdenes vayan a ejecutarse en otro ordenador.</p>
+<p>-d es existe la carpeta y -e que sal mas adelante en la practica signfica existe el archivo.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">TSEBRA_PATH</span><span class="op">=</span>/home/joiglu/bin/TSEBRA/bin/</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MINIPROTHINT_PATH</span><span class="op">=</span>/home/joiglu/bin/miniprothint/</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">galba.pl</span> <span class="at">--species</span><span class="op">=</span><span class="st">&quot;Arabidopsis thaliana&quot;</span> <span class="dt">\</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">--genome</span><span class="op">=</span>At4.soft.fa <span class="dt">\</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">--prot_seq</span><span class="op">=</span>proteinas.fasta</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="va">$PATH</span>:~/bin/hifiasm </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-e</span> asm1/At4.bp.p_ctg.gfa <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>   <span class="ex">hifiasm</span> <span class="at">-o</span> asm1/At4 <span class="at">-t</span> 2 <span class="at">-f</span> 0 ../../data/At4.10.fa.gz <span class="dv">2</span><span class="op">&gt;</span> asm1/hifiasm.log</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section>
-<section id="ejercicio-4" class="level1">
-<h1>Ejercicio 4</h1>
-<p>Incluye en tu documento de Quarto un bloque de código (pero no ejecutable, con la opción eval: false) como el anterior, donde los caminos TSERBA y a MINIPROTHINT se correspondan con tu propia carpeta bin, aunque no los tengas instalados.</p>
-</section>
+<p>¿Los parámetros corresponden al ensamblaje de un genoma haploide o diploide?</p>
+<p>hifiasm está diseñado principalmente para genomas diploides. LO sabemos puesto que geera dos ensamblajes uno primario, p_ctg y uno alternativo o haploide, a_ctgque implementa la resolucion de los haplotips basandose en su heterocigosidad.</p>
+<p>¿Qué nivel de eliminación de duplicaciones hemos aplicado? (El paso de eliminar duplicaciones sirve para que las zonas de alta heterocigosidad no sean ensambladas como contigs diferentes).</p>
+<p>hifiasm aplica automáticamente una purga moderada estándar. Esta purga elimina duplicaciones debidas a heterocigosidad, pero sin ser extrema. ESte comportamiento esta controlados por parametros, como -l,que hace referencia a la longitudminima de la purga y -s sensibilidad para separacion de haplotipos. Sin embargo, se podrian modificar determinados parametros para hacer una purga mas o mnos radical.</p>
+<p>Si tuvieramos lecturas ultra-largas, ¿con qué opción o argumento añadiríamos esa información?</p>
+<p>–ul permite incorporar lecturas ultra-largas.</p>
+<p>#Evaluación del resultado</p>
+<p>¿Dónde están las secuencias que componen el ensamblaje?</p>
+<p>Las secuencias del ensamblaje están en los archivos .gfa, concretamente en las líneas de tipo S donde aparece: el identificador del contig y la secuencia nucleotídica</p>
+<p>En los archivos .gfa, ¿qué son las líneas que empiezan por ‘A’?</p>
+<p>Las líneas A contienen información de alineamiento de las lecturas que construyen cada contig/unitig. incluyen:</p>
+<p>nombre del contig posición en el contig hebra (+/-) nombre de la lectura coordenadas de la lectura ID de la lectura estado de haplotipo</p>
+<p>¿Qué información tiene los archivos .bed?</p>
+<p>los archivos .bed (por ejemplo *lowQ.bed) contienen coordenadas de regiones de baja calidad en el ensamblaje, indican posiciones en los contigs y marcan zonas potencialmente problemáticas.</p>
+<p>¿Cuál es la cobertura media estimada de las secuencias homocigotas?</p>
+<p>Cobertura homocigota ≈ 57× (corresponde al pico alto del gráfico de k-mers)</p>
+<p>en nuestro caso, si miramos el archivo hifiasm.log, el pico esta en 12 ¿Y la de las heterocigotas?</p>
+<p>Cobertura heterocigota ≈ 28× (corresponde al pico más bajo del gráfico de k-mers) en nuestro caso, si miramos el archivo hifiasm.log, no hay pico en 6 que es donde se esperaria. se entiende que al seruna planta cuyo ecotipo es utilizado como control sera homocigota.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">&#39;(/^S/){print &quot;&gt;&quot; $2 &quot;\n&quot; $3}&#39;</span> asm1/At4.bp.p_ctg.gfa <span class="op">&gt;</span> asm1/At4.fa</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>#Calidad del ensamblaje</p>
 
 </main>
 <!-- /main column -->
