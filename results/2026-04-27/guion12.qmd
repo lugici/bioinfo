@@ -1,0 +1,215 @@
+---
+title: "guion12"
+editor: visual
+format:
+   html:
+      embed-resources: true
+---
+
+## Datos
+Utilizaremos las medidas de expresión génica del archivo salmon.merged.gene_counts.tsv. Los datos proceden de 12 genotecas de RNA-seq de lecturas emparejadas, de muestras de Drosophila melanogaster de dos orígenes geográficos (Panamá y Maine) y dos tratamientos de temperatura (low y high).
+
+El archivo dme_elev_samples.tsv, una tabla que indica a qué región y tratamiento pertenece cada muestra.
+
+Los dos archivos deben estar guardados en la carpeta de datos.
+
+##Exploración de los datos
+```{r}
+muestras <- read.table('../../data/dme_elev_samples.tsv', header = TRUE)
+genex <- read.table('../../data/salmon.merged.gene_counts.tsv',
+                    header = TRUE)
+```
+
+#Ejercicio 1
+Usa la función paste() para añadir una columna a muestras que contenga la población y la temperatura unidas por _.
+
+```{r}
+muestras$group <- paste(muestras$population, muestras$temp, sep = "_")
+head(muestras)
+```
+
+¿Cuál es el número total de lecturas por muestra?
+```{r}
+colSums(genex[, 3:14])
+```
+Se observa el nombre de la muestra con el número total de lecturas debajo de su respectivo nombre. por ejemplo en el caso de  la muestra SRR1576457 hay un total de 28252778 lecturas. Si quisieramos el numero total de lecturas se podría hacer sum(colSums(genex[, 3:14])) o si quisieramos el numero medio de lecturas mean(colSums(genex[, 3:14]))
+
+¿Los recuentos tienen distribuciones parecidas entre muestras?
+
+```{r}
+boxplot(log2(genex[, 3:14] + 1), las = 2)
+```
+Sí, tienen distribuciones similares, puesto que tienen cajas similares, medias similares y rangos similares.
+
+¿Cuántos genes no se expresan en absoluto en ninguna de las muestras?
+
+```{r}
+sum(rowSums(genex[, 3:14]) == 0)
+```
+El total de genes que no se expresan en ninguna de las muestras es de 4722.
+
+##Crear el objeto de clase DESeqDataSet
+
+Para crear un objeto de clase DESeqDataSet necesitamos que las filas de la tabla muestras estén en el mismo orden que las columnas en genex. La función DESeqDataSetFromMatrix() necesita que los recuentos sean una matriz, no un marco de datos. Y en muestras debe haber factores.
+
+
+
+```{r}
+suppressMessages(library('DESeq2'))
+all(names(genex)[3:14] == muestras$sample)
+```
+
+```{r}
+# Pasamos la columna "sample" a nombres de fila:
+row.names(muestras) <- muestras$sample
+# Eliminamos la columna "sample":
+muestras$sample <- NULL
+# Y convertimos "population" y "temp" en factores:
+muestras$population <- factor(muestras$population,
+                              levels = c('maine', 'panama'))
+muestras$temp       <- factor(muestras$temp,
+                              levels = c('low', 'high'))
+muestras
+```
+
+Aunque no hacía falta definir los niveles de los factores, lo indico porque es un buen momento para definir manualmente su orden (por defecto se ordenan alfabéticamente). El orden de los niveles determina qué nivel actúa como referencia en los contrastes estadísticos (el primero). Esto resultaría importante, por ejemplo, al comparar tratamientos respecto de un control.
+
+Los datos de recuento deben ser números enteros y en forma de matriz
+
+```{r}
+row.names(genex) <- genex$gene_name
+genex$gene_name <- NULL
+genex$gene_id   <- NULL
+genex <- round(as.matrix(genex))
+```
+
+```{r}
+dds1 <- DESeqDataSetFromMatrix(
+   countData = genex,
+   colData = muestras,
+   design = ~ population + temp
+)
+dds1
+```
+NOTA
+Los objetos DESeqDataSet pueden contener información sobre las coordenadas cromosómicas de los genes o tránscritos, si se construyen a partir de otro tipo de datos.
+
+##Pre-filtrado
+
+Una fracción importante de genes no se están expresando en ningúna muestra. Aunque el filtrado no es necesario, ayuda a reducir la memoria ocupada por dds1:
+
+
+```{r}
+keep <- rowSums(counts(dds1)) > 0
+dds1 <- dds1[keep, ]
+```
+
+##Expresión diferencial
+
+```{r}
+dds1 <- DESeq(dds1)
+```
+```{r}
+res <- results(dds1)
+res
+```
+
+# Ejercicio 3
+Mira la ayuda de results() y genera también la tabla de resultados para el contraste entre las dos regiones de procedencia de las moscas.
+
+```{r}
+res_pop <- results(dds1, contrast = c("population", "panama", "maine"))
+res_pop
+```
+
+
+Usa summary() sobre los resultados para ver el número de genes diferencialmente expresados entre cada par de condiciones.
+
+```{r}
+summary(res)
+summary(res_pop)
+```
+Estos dos bloques expresan el efecto de la temperatura, el primer bloque (high vs low), y el efecto de población (panamá vs maine), en el segundo. En el primer resultado se interpreta que hay 2418 genes más expresados en high que en low y 2336 genes más expresados en low que en high. Por su parte, en el segundo bloque se observa un menor número de genes expresados de manera diferencia. Se puede concluir que la temperatura tiene un efecto mucho mayor que la población sobre la expresión génica.
+
+¿Cuál es la tasa de falsos positivos (FDR)?
+
+En la orden anterior se observa la línea:adjusted p-value < 0.1, por lo tanto, se espera que hasta un 10% sean falsos positivos.
+
+## Gráficas
+
+```{r}
+plotMA(res)
+```
+
+Los genes con niveles de expresión más bajos producen resultados más ruidosos (la varianza es mayor). La función lfcShrink() contrae (shrink) las estimaciones de los efectos (log fold change) para reducir el ruido y hacer el resultado más realista:
+
+```{r}
+resShrink <- lfcShrink(dds1, coef = 'temp_high_vs_low',
+                       type = 'normal')
+plotMA(resShrink)
+```
+# Ejercicio 4
+¿Sabrías hacer una gráfica volcán?
+
+```{r}
+plot(res$log2FoldChange,
+     -log10(res$pvalue),
+     pch = 20,
+     main = "Volcano plot",
+     xlab = "log2 Fold Change",
+     ylab = "-log10 p-value")
+
+abline(h = -log10(0.05), col = "red")
+abline(v = c(-1, 1), col = "blue")
+
+```
+
+## Extraer datos transformados
+
+Aunque los datos de entrada no deben estar normalizados y la función DESeq() ya tiene en cuenta las diferencias de tamaño de genoteca entre muestras y la relación entre media y varianza, puede ser útil disponer de los datos normalizados para representarlos gráficamente. Para ello podemos usar las funciones vst() y assay():
+
+```{r}
+dds2 <- vst(dds1)
+NormCounts <- assay(dds2)
+```
+
+```{r}
+res <- res[! is.na(res$pvalue), ]
+res <- res[order(res$log2FoldChange),]
+heatmap(NormCounts[c(head(row.names(res), 100),
+                     tail(row.names(res), 100)), ],
+        Rowv = NA, Colv = NA)
+```
+
+# Ejercicio 5
+
+¿Podrías explicar qué hace el bloque de código anterior?
+- vst(dds1) transforma los datos para estabilizar la varianza (mejor para visualización)
+- assay(dds2) extrae la matriz de expresion normalizada
+- res <- res[! is.na(res$pvalue), ] elimina genes sin p valor, es decir, quitar filas donde el p-value es NA. algunos genes no tienen p valor porque hay pocos recuentos, es decir, expresión casi nula.
+- res <- res[order(res$log2FoldChange),] ordena los genes de menor a mayor expresion diferencial
+- heatmap hace un "mapa de calor" para representar los diferentes patrones de expresion entre las muestras. un color más suave indica menor expresión y un color más intenso indica una mayor expresión. Aquí hace una selección de los 100 genes que más se expresan (tail)y los 100 que menos (head)
+
+# Ejercicio 6
+
+los mismos datos con otro paquete de R: limma, se sobreexpresan más genes en temperatura baja que en temperatura alta. ¿Confirma tu análisis esta conclusión?
+
+No, en mis resultados con DESeq2 los genes más expresados en high eran 2418 mientras que en low eran 2336, es decir, segun este paquete de R hay mas sobreexpresión en los high
+
+Estos son los 10 genes más diferencialmente expresados según aquel análisis entre las condiciones de baja y alta temperatura:
+
+                   logFC  AveExpr         t      P.Value    adj.P.Val        B
+Cpr92F          2.473527 6.201774  24.28881 1.306910e-13 1.739105e-09 21.29258
+Vajk3           1.675184 4.029281  21.90298 6.069753e-13 3.524528e-09 19.66813
+lncRNA:CR46017 -3.974938 1.044005 -21.50807 7.945880e-13 3.524528e-09 16.80878
+CG7214          2.198970 7.945664  20.75054 1.349821e-12 4.490516e-09 19.14847
+CG3739         -2.869172 6.514652 -20.49734 4.414988e-12 1.175005e-08 18.01975
+Acp1            2.231834 7.638125  17.79441 2.089853e-11 3.997808e-08 16.54909
+¿Cómo se comparan estos resultados con los tuyos?
+
+
+
+
+
+
+
