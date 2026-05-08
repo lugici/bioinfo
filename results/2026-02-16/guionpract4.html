@@ -2238,7 +2238,7 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Última actualización:</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">6 de mayo de 2026</p>
+      <p class="date">8 de mayo de 2026</p>
     </div>
   </div>
   
@@ -2275,10 +2275,16 @@ vertical-align: -.125em;
 <p>se pueden pedir un monton de campos separados por comas, para saber los que puedo pedir puedo poner la linea de data format y en vez de poner fields pongo help</p>
 <p>La línea larga que sigue a <code>--fields</code> especifica qué información sobre los genomas queremos ver en la tabla. Para saber qué campos se pueden seleccionar, puedes ejecutar la orden <code>dataformat tsv genome --help</code>. Veamos esa tabla en el informe HTML en un formato adecuado.</p>
 <div class="cell" data-messages="false">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&#39;kableExtra&#39;</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>genomas <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&#39;trypanosoma_annotated.txt&#39;</span>,</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(genomas) </span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&#39;kableExtra&#39;</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in library(&quot;kableExtra&quot;): no hay paquete llamado &#39;kableExtra&#39;</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>genomas <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&#39;trypanosoma_annotated.txt&#39;</span>,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(genomas) </span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in kable(genomas): no se pudo encontrar la función &quot;kable&quot;</code></pre>
+</div>
 </div>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -2301,48 +2307,238 @@ vertical-align: -.125em;
 <h1>Ordenar una tabla</h1>
 <p>La función <code>order()</code> produce los índices ordenados de los elementos de un vector. Consulta su ayuda y experimenta con ella. Vamos a usar esta función para ordenar las filas del marco de datos <code>genomas</code> por fecha, que es la tercera columna, llamada <code>Assembly.Release.Date</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Observa que asignamos el resultado del ordenamiento al mismo objeto que</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># estamos ordenando, para guardar el resultado sin tener que generar otro objeto.</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>genomas <span class="ot">&lt;-</span> genomas[<span class="fu">order</span>(genomas<span class="sc">$</span>Assembly.Release.Date), ]</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(genomas) </span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Observa que asignamos el resultado del ordenamiento al mismo objeto que</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># estamos ordenando, para guardar el resultado sin tener que generar otro objeto.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>genomas <span class="ot">&lt;-</span> genomas[<span class="fu">order</span>(genomas<span class="sc">$</span>Assembly.Release.Date), ]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(genomas) </span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in kable(genomas): no se pudo encontrar la función &quot;kable&quot;</code></pre>
+</div>
 </div>
 <p>Casualmente, la fecha estaba en formato “%Y-%m-%d”, en el que el orden alfabético coincide con el orden temporal. Al crear <code>genomas</code>, <code>read.table()</code> había interpretado la tercera columna como texto. Para que las fechas sean entendidas como tales, podemos usar la función <code>as.Date()</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>genomas<span class="sc">$</span>Assembly.Release.Date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(genomas<span class="sc">$</span>Assembly.Release.Date,</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">&#39;%Y-%m-%d&#39;</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>genomas<span class="sc">$</span>Assembly.Release.Date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(genomas<span class="sc">$</span>Assembly.Release.Date,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">&#39;%Y-%m-%d&#39;</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Una vez convertida en “fecha”, la columna “Assembly.Release.Date” puede usarse correctamente, por ejemplo, como eje de abscisas en una gráfica:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Aquí usamos &quot;cumsum()&quot; para obtener la suma acumulada del número de bases</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># secuenciadas.</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> genomas<span class="sc">$</span>Assembly.Release.Date,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> <span class="fu">cumsum</span>(genomas<span class="sc">$</span>Assembly.Stats.ATGC.Count),</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&#39;b&#39;</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&#39;Fecha de publicación&#39;</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&#39;Longitud total secuenciada (bp)&#39;</span>,</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&#39;Genomas anotados de Trypanosoma&#39;</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Aquí usamos &quot;cumsum()&quot; para obtener la suma acumulada del número de bases</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># secuenciadas.</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> genomas<span class="sc">$</span>Assembly.Release.Date,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> <span class="fu">cumsum</span>(genomas<span class="sc">$</span>Assembly.Stats.ATGC.Count),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&#39;b&#39;</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&#39;Fecha de publicación&#39;</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&#39;Longitud total secuenciada (bp)&#39;</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&#39;Genomas anotados de Trypanosoma&#39;</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img role="img" src="data:image/png;base64,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" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 <p>se puede ver como conforme pasan los aós hay genomas mas largos # Archivos JSON y GFF Habiendo visto las opciones, decidimos descargar el genoma y la anotación funcional de una de ellas, por ejemplo GCA_022059095.1.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-e</span> ncbi_data/data/GCA_022059095.1/genomic.gff <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>   <span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-e</span> ncbi_dataset.zip <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>      <span class="ex">~/bin/datasets</span> download genome accession GCA_022059095.1 <span class="at">--include</span> genome,gff3</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>   <span class="cf">fi</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">unzip</span> ncbi_dataset.zip</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-e</span> ncbi_data/data/GCA_022059095.1/genomic.gff <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>   <span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-e</span> ncbi_dataset.zip <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>      <span class="ex">~/bin/datasets</span> download genome accession GCA_022059095.1 <span class="at">--include</span> genome,gff3</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>   <span class="cf">fi</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">unzip</span> ncbi_dataset.zip</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Archive:  ncbi_dataset.zip
+replace README.md? [y]es, [n]o, [A]ll, [N]one, [r]ename:  NULL
+(EOF or read error, treating as &quot;[N]one&quot; ...)</code></pre>
+</div>
 </div>
 <p>En la carpeta <code>ncbi_dataset/data</code> encontrarás un archivo en formato JSON con información sobre los datos descargados, y un archivo en formato “jsonlines”. El formato “jsonlines” es una versión de JSON en la que cada registro ocupa una sola línea. Esto dificulta la visualización, pero agiliza el análisis de los datos en la línea de órdenes. Para ver mejor el contenido del archivo con la extensión <code>jsonl</code>, podríamos utilizar el programa <a href="https://jqlang.org/"><code>jq</code></a>, o bien utilizar la función <code>prettify()</code> del paquete <code>jsonlite</code> de R:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&#39;jsonlite&#39;</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">prettify</span>(<span class="fu">readLines</span>(<span class="st">&#39;ncbi_dataset/data/assembly_data_report.jsonl&#39;</span>))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&#39;jsonlite&#39;</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">prettify</span>(<span class="fu">readLines</span>(<span class="st">&#39;ncbi_dataset/data/assembly_data_report.jsonl&#39;</span>))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{
+    &quot;assemblyInfo&quot;: {
+        &quot;assemblyLevel&quot;: &quot;Contig&quot;,
+        &quot;assemblyName&quot;: &quot;T.mel.1&quot;,
+        &quot;assemblyType&quot;: &quot;haploid&quot;,
+        &quot;submitter&quot;: &quot;University of Edinburgh&quot;,
+        &quot;refseqCategory&quot;: &quot;reference genome&quot;,
+        &quot;bioprojectLineage&quot;: [
+            {
+                &quot;bioprojects&quot;: [
+                    {
+                        &quot;accession&quot;: &quot;PRJNA786535&quot;,
+                        &quot;title&quot;: &quot;Trypanosoma melophagium isolate:St. Kilda Genome sequencing and assembly&quot;
+                    }
+                ]
+            }
+        ],
+        &quot;sequencingTech&quot;: &quot;Oxford Nanopore MinION; DNBseq&quot;,
+        &quot;blastUrl&quot;: &quot;https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastSearch&amp;PROG_DEF=blastn&amp;BLAST_SPEC=GDH_GCA_022059095.1&quot;,
+        &quot;biosample&quot;: {
+            &quot;accession&quot;: &quot;SAMN23701209&quot;,
+            &quot;lastUpdated&quot;: &quot;2021-12-29T05:45:01.878&quot;,
+            &quot;publicationDate&quot;: &quot;2021-12-29T00:00:00.000&quot;,
+            &quot;submissionDate&quot;: &quot;2021-12-06T10:53:03.556&quot;,
+            &quot;sampleIds&quot;: [
+                {
+                    &quot;label&quot;: &quot;Sample name&quot;,
+                    &quot;value&quot;: &quot;T. melophagium&quot;
+                },
+                {
+                    &quot;db&quot;: &quot;SRA&quot;,
+                    &quot;value&quot;: &quot;SRS11278131&quot;
+                }
+            ],
+            &quot;description&quot;: {
+                &quot;title&quot;: &quot;MIGS Eukaryotic sample from Trypanosoma melophagium&quot;,
+                &quot;organism&quot;: {
+                    &quot;taxId&quot;: 715481,
+                    &quot;organismName&quot;: &quot;Trypanosoma melophagium&quot;
+                },
+                &quot;comment&quot;: &quot;Keywords: GSC:MIxS;MIGS:6.0&quot;
+            },
+            &quot;owner&quot;: {
+                &quot;name&quot;: &quot;University of Edinburgh&quot;,
+                &quot;contacts&quot;: [
+                    {
+
+                    }
+                ]
+            },
+            &quot;models&quot;: [
+                &quot;MIGS.eu&quot;,
+                &quot;MIGS/MIMS/MIMARKS.host-associated&quot;
+            ],
+            &quot;bioprojects&quot;: [
+                {
+                    &quot;accession&quot;: &quot;PRJNA786535&quot;
+                }
+            ],
+            &quot;package&quot;: &quot;MIGS.eu.host-associated.6.0&quot;,
+            &quot;attributes&quot;: [
+                {
+                    &quot;name&quot;: &quot;isolate&quot;,
+                    &quot;value&quot;: &quot;St. Kilda&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;isolation_source&quot;,
+                    &quot;value&quot;: &quot;blood&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;ecotype&quot;,
+                    &quot;value&quot;: &quot;St. Kilda&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;collection_date&quot;,
+                    &quot;value&quot;: &quot;2020-09-17&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;env_broad_scale&quot;,
+                    &quot;value&quot;: &quot;Cultured&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;env_local_scale&quot;,
+                    &quot;value&quot;: &quot;Cultured&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;env_medium&quot;,
+                    &quot;value&quot;: &quot;Cultured&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;geo_loc_name&quot;,
+                    &quot;value&quot;: &quot;United Kingdom: Scotland, St. Kilda&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;host&quot;,
+                    &quot;value&quot;: &quot;Ovis aries&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;isol_growth_condt&quot;,
+                    &quot;value&quot;: &quot;This study&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;lat_lon&quot;,
+                    &quot;value&quot;: &quot;57.8287 N 8.6352 W&quot;
+                }
+            ],
+            &quot;status&quot;: {
+                &quot;status&quot;: &quot;live&quot;,
+                &quot;when&quot;: &quot;2021-12-29T05:45:01.878&quot;
+            },
+            &quot;collectionDate&quot;: &quot;2020-09-17&quot;,
+            &quot;ecotype&quot;: &quot;St. Kilda&quot;,
+            &quot;geoLocName&quot;: &quot;United Kingdom: Scotland, St. Kilda&quot;,
+            &quot;host&quot;: &quot;Ovis aries&quot;,
+            &quot;isolate&quot;: &quot;St. Kilda&quot;,
+            &quot;isolationSource&quot;: &quot;blood&quot;,
+            &quot;latLon&quot;: &quot;57.8287 N 8.6352 W&quot;
+        },
+        &quot;assemblyStatus&quot;: &quot;current&quot;,
+        &quot;pairedAssembly&quot;: {
+            &quot;accession&quot;: &quot;GCF_022059095.1&quot;,
+            &quot;status&quot;: &quot;current&quot;,
+            &quot;annotationName&quot;: &quot;Annotation submitted by University of Edinburgh&quot;
+        },
+        &quot;bioprojectAccession&quot;: &quot;PRJNA786535&quot;,
+        &quot;assemblyMethod&quot;: &quot;Wtdbg2 v. 13/05/2021&quot;,
+        &quot;releaseDate&quot;: &quot;2022-02-08&quot;
+    },
+    &quot;assemblyStats&quot;: {
+        &quot;totalSequenceLength&quot;: &quot;23303718&quot;,
+        &quot;totalUngappedLength&quot;: &quot;23303718&quot;,
+        &quot;numberOfContigs&quot;: 64,
+        &quot;contigN50&quot;: 505851,
+        &quot;contigL50&quot;: 15,
+        &quot;numberOfScaffolds&quot;: 64,
+        &quot;scaffoldN50&quot;: 505851,
+        &quot;scaffoldL50&quot;: 15,
+        &quot;numberOfComponentSequences&quot;: 64,
+        &quot;gcCount&quot;: &quot;9608043&quot;,
+        &quot;gcPercent&quot;: 41,
+        &quot;genomeCoverage&quot;: &quot;225&quot;,
+        &quot;atgcCount&quot;: &quot;23303718&quot;
+    },
+    &quot;annotationInfo&quot;: {
+        &quot;name&quot;: &quot;Annotation submitted by University of Edinburgh&quot;,
+        &quot;provider&quot;: &quot;University of Edinburgh&quot;,
+        &quot;releaseDate&quot;: &quot;2022-02-08&quot;,
+        &quot;stats&quot;: {
+            &quot;geneCounts&quot;: {
+                &quot;total&quot;: 9768,
+                &quot;proteinCoding&quot;: 9768
+            }
+        }
+    },
+    &quot;wgsInfo&quot;: {
+        &quot;wgsProjectAccession&quot;: &quot;JAJSEB01&quot;,
+        &quot;masterWgsUrl&quot;: &quot;https://www.ncbi.nlm.nih.gov/nuccore/JAJSEB000000000.1&quot;,
+        &quot;wgsContigsUrl&quot;: &quot;https://www.ncbi.nlm.nih.gov/Traces/wgs/JAJSEB01&quot;
+    },
+    &quot;currentAccession&quot;: &quot;GCA_022059095.1&quot;,
+    &quot;accession&quot;: &quot;GCA_022059095.1&quot;,
+    &quot;pairedAccession&quot;: &quot;GCF_022059095.1&quot;,
+    &quot;sourceDatabase&quot;: &quot;SOURCE_DATABASE_GENBANK&quot;,
+    &quot;organism&quot;: {
+        &quot;taxId&quot;: 715481,
+        &quot;organismName&quot;: &quot;Trypanosoma melophagium&quot;,
+        &quot;infraspecificNames&quot;: {
+            &quot;ecotype&quot;: &quot;St. Kilda&quot;,
+            &quot;isolate&quot;: &quot;St. Kilda&quot;
+        }
+    }
+}
+ </code></pre>
+</div>
 </div>
 <p>Volviendo a lo que nos interesa, vamos a cargar en un marco de datos de una sesión de R la anotación funcional del genoma escogido. Aunque existen funciones específicas para leer archivos GFF, usaremos la función básica <code>read.table()</code>, con alguna precaución.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Como no tiene cabecera, le damos los nombres de las columnas:</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>gff <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&#39;ncbi_dataset/data/GCA_022059095.1/genomic.gff&#39;</span>, <span class="at">sep =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;seqid&#39;</span>, <span class="st">&#39;source&#39;</span>, <span class="st">&#39;type&#39;</span>, <span class="st">&#39;start&#39;</span>, <span class="st">&#39;end&#39;</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                                <span class="st">&#39;score&#39;</span>, <span class="st">&#39;strand&#39;</span>, <span class="st">&#39;phase&#39;</span>, <span class="st">&#39;attributes&#39;</span>),</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">quote =</span> <span class="st">&#39;&#39;</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Como no tiene cabecera, le damos los nombres de las columnas:</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>gff <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&#39;ncbi_dataset/data/GCA_022059095.1/genomic.gff&#39;</span>, <span class="at">sep =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;seqid&#39;</span>, <span class="st">&#39;source&#39;</span>, <span class="st">&#39;type&#39;</span>, <span class="st">&#39;start&#39;</span>, <span class="st">&#39;end&#39;</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                                <span class="st">&#39;score&#39;</span>, <span class="st">&#39;strand&#39;</span>, <span class="st">&#39;phase&#39;</span>, <span class="st">&#39;attributes&#39;</span>),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">quote =</span> <span class="st">&#39;&#39;</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Al leer el archivo GFF con <code>read.table()</code>, debemos especificar que el separador de columnas es el tabulador y que no hay texto entrecomillado en el archivo. Esto último se consigue con la opción <code>quote = &#39;&#39;</code>, y sirve para evitar que todo lo que se encuentre entre dos apóstrofes (<em>’</em>) se considere parte de un mismo campo de información, aunque sean cientos de líneas.</p>
 <p>Para comprobar que el archivo ha sido leído completo y sin errores, conviene revisar las dimensiones del marco de datos (<code>dim(gff)</code>) o incluso visualizar el principio (<code>head(gff)</code>) y el final (<code>tail(gff)</code>) del objeto, que es demasiado grande para mostrarlo en pantalla completo.</p>
@@ -2350,17 +2546,17 @@ vertical-align: -.125em;
 <h2 class="anchored" data-anchor-id="seleccionar-filas-y-columnas">Seleccionar filas y columnas</h2>
 <p>En el objeto <code>gff</code> hay 5 valores diferentes de la variable <code>type</code>: “CDS”, “exon”, “gene”, “mRNA” y “region”. Puedes comprobarlo con <code>unique(gff$type)</code>, o con <code>table(gff$type)</code>. Podemos separar la tabla en cinco marcos de datos, que correspondan a esos cinco tipos de anotación funcional.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Usamos un vector booleano como índice de las filas.</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># En las tablas nuevas, no necesitamos la tercera columna</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># y la eliminamos con el &quot;-3&quot;.</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>gene   <span class="ot">&lt;-</span> gff[gff<span class="sc">$</span>type <span class="sc">==</span> <span class="st">&#39;gene&#39;</span>,   <span class="sc">-</span><span class="dv">3</span>]</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>mrna   <span class="ot">&lt;-</span> gff[gff<span class="sc">$</span>type <span class="sc">==</span> <span class="st">&#39;mRNA&#39;</span>,   <span class="sc">-</span><span class="dv">3</span>]</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>exon   <span class="ot">&lt;-</span> gff[gff<span class="sc">$</span>type <span class="sc">==</span> <span class="st">&#39;exon&#39;</span>,   <span class="sc">-</span><span class="dv">3</span>]</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>cds    <span class="ot">&lt;-</span> gff[gff<span class="sc">$</span>type <span class="sc">==</span> <span class="st">&#39;CDS&#39;</span>,    <span class="sc">-</span><span class="dv">3</span>]</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>region <span class="ot">&lt;-</span> gff[gff<span class="sc">$</span>type <span class="sc">==</span> <span class="st">&#39;region&#39;</span>, <span class="sc">-</span><span class="dv">3</span>]</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Alinear las órdenes nos ayuda a detectar posibles errores</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Usamos un vector booleano como índice de las filas.</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># En las tablas nuevas, no necesitamos la tercera columna</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># y la eliminamos con el &quot;-3&quot;.</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>gene   <span class="ot">&lt;-</span> gff[gff<span class="sc">$</span>type <span class="sc">==</span> <span class="st">&#39;gene&#39;</span>,   <span class="sc">-</span><span class="dv">3</span>]</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>mrna   <span class="ot">&lt;-</span> gff[gff<span class="sc">$</span>type <span class="sc">==</span> <span class="st">&#39;mRNA&#39;</span>,   <span class="sc">-</span><span class="dv">3</span>]</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>exon   <span class="ot">&lt;-</span> gff[gff<span class="sc">$</span>type <span class="sc">==</span> <span class="st">&#39;exon&#39;</span>,   <span class="sc">-</span><span class="dv">3</span>]</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>cds    <span class="ot">&lt;-</span> gff[gff<span class="sc">$</span>type <span class="sc">==</span> <span class="st">&#39;CDS&#39;</span>,    <span class="sc">-</span><span class="dv">3</span>]</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>region <span class="ot">&lt;-</span> gff[gff<span class="sc">$</span>type <span class="sc">==</span> <span class="st">&#39;region&#39;</span>, <span class="sc">-</span><span class="dv">3</span>]</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Alinear las órdenes nos ayuda a detectar posibles errores</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -2380,13 +2576,13 @@ vertical-align: -.125em;
 <h2 class="anchored" data-anchor-id="agrupar-operar-y-resumir">Agrupar, operar y resumir</h2>
 <p>Habiendo separado los diferentes tipos de anotaciones, ahora resulta fácil obtener estadísticas de cada uno. Podemos querer una tabla que nos diga para cada tipo de anotación, cuántos elementos de ese tipo hay en el genoma, qué longitud media tienen y qué desviación estándar. Hay diferentes maneras de conseguirlo. La más rudimentaria implicaría obtener cada estadística individualmente y después juntarlas en una nueva tabla. Por ejemplo, para regiones codificantes (“CDS”):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cds<span class="sc">$</span>longitud <span class="ot">&lt;-</span> cds<span class="sc">$</span>end <span class="sc">-</span> cds<span class="sc">$</span>start <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>resumen <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>   <span class="at">tipo       =</span> <span class="st">&#39;CDS&#39;</span>,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>   número     <span class="ot">=</span> <span class="fu">nrow</span>(cds),</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">long.Media =</span> <span class="fu">mean</span>(cds<span class="sc">$</span>longitud),</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">long.SD    =</span> <span class="fu">sd</span>(cds<span class="sc">$</span>longitud),</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>cds<span class="sc">$</span>longitud <span class="ot">&lt;-</span> cds<span class="sc">$</span>end <span class="sc">-</span> cds<span class="sc">$</span>start <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>resumen <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>   <span class="at">tipo       =</span> <span class="st">&#39;CDS&#39;</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>   número     <span class="ot">=</span> <span class="fu">nrow</span>(cds),</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">long.Media =</span> <span class="fu">mean</span>(cds<span class="sc">$</span>longitud),</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">long.SD    =</span> <span class="fu">sd</span>(cds<span class="sc">$</span>longitud),</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in data.frame(tipo = &quot;CDS&quot;, número = nrow(cds), long.Media = mean(cds$longitud), : argumento ausente, sin argumento por omisión</code></pre>
 </div>
@@ -2406,53 +2602,90 @@ vertical-align: -.125em;
 </div>
 <p>Este tipo de operación es bastante habitual, y se puede hacer sin necesidad de crear marcos de datos parciales. La función <code>split()</code> divide las líneas de un marco de datos en tantos marcos de datos como valores diferentes (<em>niveles</em>) haya en el <em>factor</em> que usemos para definir los grupos. El resultado es un solo objeto: una <em>lista</em> de marcos de datos:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Esto es una lista de marcos de datos:</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>porTipo <span class="ot">&lt;-</span> <span class="fu">split</span>(gff, gff<span class="sc">$</span>type)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Estas funciones nos permiten inspeccionar algunas características</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># del nuevo objeto:</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(porTipo)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(porTipo)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(porTipo)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(porTipo, class)</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(porTipo, nrow)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Esto es una lista de marcos de datos:</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>porTipo <span class="ot">&lt;-</span> <span class="fu">split</span>(gff, gff<span class="sc">$</span>type)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Estas funciones nos permiten inspeccionar algunas características</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># del nuevo objeto:</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(porTipo)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] &quot;list&quot;</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(porTipo)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(porTipo)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] &quot;CDS&quot;    &quot;exon&quot;   &quot;gene&quot;   &quot;mRNA&quot;   &quot;region&quot;</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(porTipo, class)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         CDS         exon         gene         mRNA       region 
+&quot;data.frame&quot; &quot;data.frame&quot; &quot;data.frame&quot; &quot;data.frame&quot; &quot;data.frame&quot; </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(porTipo, nrow)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   CDS   exon   gene   mRNA region 
+ 11304  11304   9768  10057     64 </code></pre>
+</div>
 </div>
 <p>La función <code>sapply()</code>, toma al menos dos argumentos: una lista (o vector) y una función. Devuelve un vector (si es posible) con los resultados de aplicar la función a cada elemento de la lista. Con esto, el resumen que queríamos se puede obtener así:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Primero calculamos las longitudes de todas las anotaciones en gff:</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>gff<span class="sc">$</span>longitud <span class="ot">&lt;-</span> gff<span class="sc">$</span>end <span class="sc">-</span> gff<span class="sc">$</span>start <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Volvemos a separar las filas por tipo, ahora que tenemos las longitudes:</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>porTipo <span class="ot">&lt;-</span> <span class="fu">split</span>(gff, gff<span class="sc">$</span>type)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>resumen <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">tipo =</span> <span class="fu">names</span>(porTipo),</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>   número <span class="ot">=</span> <span class="fu">sapply</span>(porTipo, nrow),</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>   <span class="at">long.Media =</span> <span class="fu">sapply</span>(porTipo, <span class="cf">function</span>(x) <span class="fu">mean</span>(x<span class="sc">$</span>longitud)),</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>   <span class="at">long.SD    =</span> <span class="fu">sapply</span>(porTipo, <span class="cf">function</span>(x)   <span class="fu">sd</span>(x<span class="sc">$</span>longitud))</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Aprovechamos para mostrar nombres de columnas más legibles:</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(resumen,</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;Tipo&#39;</span>, <span class="st">&#39;Número&#39;</span>, <span class="st">&#39;Longitud Media&#39;</span>,</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&#39;Desviación estándar&#39;</span>),</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">row.names =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>   <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Primero calculamos las longitudes de todas las anotaciones en gff:</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>gff<span class="sc">$</span>longitud <span class="ot">&lt;-</span> gff<span class="sc">$</span>end <span class="sc">-</span> gff<span class="sc">$</span>start <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Volvemos a separar las filas por tipo, ahora que tenemos las longitudes:</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>porTipo <span class="ot">&lt;-</span> <span class="fu">split</span>(gff, gff<span class="sc">$</span>type)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>resumen <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">tipo =</span> <span class="fu">names</span>(porTipo),</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>   número <span class="ot">=</span> <span class="fu">sapply</span>(porTipo, nrow),</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>   <span class="at">long.Media =</span> <span class="fu">sapply</span>(porTipo, <span class="cf">function</span>(x) <span class="fu">mean</span>(x<span class="sc">$</span>longitud)),</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>   <span class="at">long.SD    =</span> <span class="fu">sapply</span>(porTipo, <span class="cf">function</span>(x)   <span class="fu">sd</span>(x<span class="sc">$</span>longitud))</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Aprovechamos para mostrar nombres de columnas más legibles:</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(resumen,</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;Tipo&#39;</span>, <span class="st">&#39;Número&#39;</span>, <span class="st">&#39;Longitud Media&#39;</span>,</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&#39;Desviación estándar&#39;</span>),</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">row.names =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>   <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in kable(resumen, col.names = c(&quot;Tipo&quot;, &quot;Número&quot;, &quot;Longitud Media&quot;, : no se pudo encontrar la función &quot;%&gt;%&quot;</code></pre>
+</div>
 </div>
 <p>Las operaciones de agrupar y resumir se pueden hacer también con funciones del paquete <code>dplyr</code>, que forma parte de un conjunto de paquetes diseñados para funcionar armoniosamente entre ellos. Son los paquetes del <a href="https://tidyverse.org/"><code>tidyverse</code></a>, muy populares en ciencia de datos. Casi se pueden considerar un dialecto de R. Las funciones (o <em>verbos</em>) más interesantes de <code>dplyr</code> son <code>group_by()</code> y <code>summarise()</code>.</p>
 <div class="cell" data-meassage="false">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&#39;dplyr&#39;</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Observa el uso de &quot;tuberías&quot; (&quot;%&gt;%&quot;):</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>resumen <span class="ot">&lt;-</span> gff <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>   número     <span class="ot">=</span> <span class="fu">n</span>(),</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">Long.Media =</span> <span class="fu">mean</span>(longitud),</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">Long.SD    =</span> <span class="fu">sd</span>(longitud)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(resumen,</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;Tipo&#39;</span>, <span class="st">&#39;Número&#39;</span>, <span class="st">&#39;Longitud Media&#39;</span>,</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&#39;Desviación estándar&#39;</span>),</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">row.names =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>   <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&#39;dplyr&#39;</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Adjuntando el paquete: &#39;dplyr&#39;</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from &#39;package:stats&#39;:
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Observa el uso de &quot;tuberías&quot; (&quot;%&gt;%&quot;):</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>resumen <span class="ot">&lt;-</span> gff <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>   número     <span class="ot">=</span> <span class="fu">n</span>(),</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">Long.Media =</span> <span class="fu">mean</span>(longitud),</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">Long.SD    =</span> <span class="fu">sd</span>(longitud)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(resumen,</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;Tipo&#39;</span>, <span class="st">&#39;Número&#39;</span>, <span class="st">&#39;Longitud Media&#39;</span>,</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&#39;Desviación estándar&#39;</span>),</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">row.names =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>   <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in kable_styling(., full_width = FALSE): no se pudo encontrar la función &quot;kable_styling&quot;</code></pre>
+</div>
 </div>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -2481,13 +2714,16 @@ vertical-align: -.125em;
 </ul>
 <p>Antes hemos usado el operador lógico <code>==</code> para crear un vector booleano con el que seleccionar algunas líneas. En este caso usaremos el operador <code>%in%</code>, que compara conjuntos o vectores de caracteres:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>candidatos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;JAJSEB010000048.1&quot;</span>,</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;JAJSEB010000012.1&quot;</span>,</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;JAJSEB010000020.1&quot;</span>,</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;JAJSEB010000016.1&quot;</span>,</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;JAJSEB010000033.1&quot;</span>)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>interesantes <span class="ot">&lt;-</span> gff[gff<span class="sc">$</span>seqid <span class="sc">%in%</span> candidatos, ]</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(interesantes)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>candidatos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;JAJSEB010000048.1&quot;</span>,</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;JAJSEB010000012.1&quot;</span>,</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;JAJSEB010000020.1&quot;</span>,</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;JAJSEB010000016.1&quot;</span>,</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;JAJSEB010000033.1&quot;</span>)</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>interesantes <span class="ot">&lt;-</span> gff[gff<span class="sc">$</span>seqid <span class="sc">%in%</span> candidatos, ]</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(interesantes)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4792   10</code></pre>
+</div>
 </div>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -2512,15 +2748,15 @@ vertical-align: -.125em;
 </ul>
 <p>Aunque existen programas específicos para comparar segmentos cromosómicos (<a href="https://github.com/arq5x/bedtools2">bedtools</a>), continuaremos practicando con marcos de datos de R. Ahora ya no podemos usar <code>%in%</code>, porque de cada cromosoma queremos unos segmentos diferentes. Una estrategia es crear cinco filtros booleanos, y después combinarlos con la operación lógica “o”, es decir <code>|</code>. En cada filtro seleccionaremos las anotaciones que estén completamente contenidas en el intervalo indicado.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> gff<span class="sc">$</span>seqid <span class="sc">==</span> <span class="st">&#39;JAJSEB010000048.1&#39;</span> <span class="sc">&amp;</span> gff<span class="sc">$</span>start <span class="sc">&gt;=</span> <span class="dv">184638</span> <span class="sc">&amp;</span> gff<span class="sc">$</span>end <span class="sc">&lt;=</span> <span class="dv">253478</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="ot">&lt;-</span> gff<span class="sc">$</span>seqid <span class="sc">==</span> <span class="st">&#39;JAJSEB010000012.1&#39;</span> <span class="sc">&amp;</span> gff<span class="sc">$</span>start <span class="sc">&gt;=</span> <span class="dv">133444</span> <span class="sc">&amp;</span> gff<span class="sc">$</span>end <span class="sc">&lt;=</span> <span class="dv">348860</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>f3 <span class="ot">&lt;-</span> gff<span class="sc">$</span>seqid <span class="sc">==</span> <span class="st">&#39;JAJSEB010000020.1&#39;</span> <span class="sc">&amp;</span> gff<span class="sc">$</span>start <span class="sc">&gt;=</span> <span class="dv">73393</span>  <span class="sc">&amp;</span> gff<span class="sc">$</span>end <span class="sc">&lt;=</span> <span class="dv">149614</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>f4 <span class="ot">&lt;-</span> gff<span class="sc">$</span>seqid <span class="sc">==</span> <span class="st">&#39;JAJSEB010000016.1&#39;</span> <span class="sc">&amp;</span> gff<span class="sc">$</span>start <span class="sc">&gt;=</span> <span class="dv">161247</span> <span class="sc">&amp;</span> gff<span class="sc">$</span>end <span class="sc">&lt;=</span> <span class="dv">272009</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>f5 <span class="ot">&lt;-</span> gff<span class="sc">$</span>seqid <span class="sc">==</span> <span class="st">&#39;JAJSEB010000033.1&#39;</span> <span class="sc">&amp;</span> gff<span class="sc">$</span>start <span class="sc">&gt;=</span> <span class="dv">123135</span> <span class="sc">&amp;</span> gff<span class="sc">$</span>end <span class="sc">&lt;=</span> <span class="dv">170687</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> f1 <span class="sc">|</span> f2 <span class="sc">|</span> f3 <span class="sc">|</span> f4 <span class="sc">|</span> f5</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>interesantes <span class="ot">&lt;-</span> gff[f, ]</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> gff<span class="sc">$</span>seqid <span class="sc">==</span> <span class="st">&#39;JAJSEB010000048.1&#39;</span> <span class="sc">&amp;</span> gff<span class="sc">$</span>start <span class="sc">&gt;=</span> <span class="dv">184638</span> <span class="sc">&amp;</span> gff<span class="sc">$</span>end <span class="sc">&lt;=</span> <span class="dv">253478</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="ot">&lt;-</span> gff<span class="sc">$</span>seqid <span class="sc">==</span> <span class="st">&#39;JAJSEB010000012.1&#39;</span> <span class="sc">&amp;</span> gff<span class="sc">$</span>start <span class="sc">&gt;=</span> <span class="dv">133444</span> <span class="sc">&amp;</span> gff<span class="sc">$</span>end <span class="sc">&lt;=</span> <span class="dv">348860</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>f3 <span class="ot">&lt;-</span> gff<span class="sc">$</span>seqid <span class="sc">==</span> <span class="st">&#39;JAJSEB010000020.1&#39;</span> <span class="sc">&amp;</span> gff<span class="sc">$</span>start <span class="sc">&gt;=</span> <span class="dv">73393</span>  <span class="sc">&amp;</span> gff<span class="sc">$</span>end <span class="sc">&lt;=</span> <span class="dv">149614</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>f4 <span class="ot">&lt;-</span> gff<span class="sc">$</span>seqid <span class="sc">==</span> <span class="st">&#39;JAJSEB010000016.1&#39;</span> <span class="sc">&amp;</span> gff<span class="sc">$</span>start <span class="sc">&gt;=</span> <span class="dv">161247</span> <span class="sc">&amp;</span> gff<span class="sc">$</span>end <span class="sc">&lt;=</span> <span class="dv">272009</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>f5 <span class="ot">&lt;-</span> gff<span class="sc">$</span>seqid <span class="sc">==</span> <span class="st">&#39;JAJSEB010000033.1&#39;</span> <span class="sc">&amp;</span> gff<span class="sc">$</span>start <span class="sc">&gt;=</span> <span class="dv">123135</span> <span class="sc">&amp;</span> gff<span class="sc">$</span>end <span class="sc">&lt;=</span> <span class="dv">170687</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> f1 <span class="sc">|</span> f2 <span class="sc">|</span> f3 <span class="sc">|</span> f4 <span class="sc">|</span> f5</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>interesantes <span class="ot">&lt;-</span> gff[f, ]</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -2554,26 +2790,26 @@ Nota
 </div>
 <p>El código siguiente descarga la tabla de genomas de <em>Trypanosoma</em> ensamblados a nivel de cromosoma, de la <a href="https://www.ebi.ac.uk/ena/">European Nucleotide Archive</a></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Aprenderemos esta sintaxis en el próximo tema:</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>portal <span class="ot">&lt;-</span> <span class="st">&#39;https://www.ebi.ac.uk/ena/portal/api/search?&#39;</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="st">&#39;result=assembly&amp;&#39;</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>query  <span class="ot">&lt;-</span> <span class="st">&#39;query=tax_tree(5690)&amp;&#39;</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>fields <span class="ot">&lt;-</span> <span class="st">&#39;fields=accession%2Cversion%2Cscientific_name%2Cbase_count%2Clast_updated%2Cassembly_level&#39;</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>URL <span class="ot">&lt;-</span> <span class="fu">paste0</span>(portal, result, query, fields)</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>genomas.ena <span class="ot">&lt;-</span> <span class="fu">read.table</span>(URL, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>, <span class="at">quote =</span> <span class="st">&#39;&#39;</span>, <span class="at">na.strings =</span> <span class="st">&#39;&#39;</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Aprenderemos esta sintaxis en el próximo tema:</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>portal <span class="ot">&lt;-</span> <span class="st">&#39;https://www.ebi.ac.uk/ena/portal/api/search?&#39;</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="st">&#39;result=assembly&amp;&#39;</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>query  <span class="ot">&lt;-</span> <span class="st">&#39;query=tax_tree(5690)&amp;&#39;</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>fields <span class="ot">&lt;-</span> <span class="st">&#39;fields=accession%2Cversion%2Cscientific_name%2Cbase_count%2Clast_updated%2Cassembly_level&#39;</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>URL <span class="ot">&lt;-</span> <span class="fu">paste0</span>(portal, result, query, fields)</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>genomas.ena <span class="ot">&lt;-</span> <span class="fu">read.table</span>(URL, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>, <span class="at">quote =</span> <span class="st">&#39;&#39;</span>, <span class="at">na.strings =</span> <span class="st">&#39;&#39;</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Tanto el nuevo marco de datos <code>genomas.ena</code>, como el que habíamos creado antes con datos de NCBI, <code>genomas</code>, tienen una columna de valores únicos: “accession” o “Assembly.Accession”. Para los registros comunes entre las dos tablas, podemos transferir información de una a otra. Por ejemplo, vamos a añadir a la tabla <code>genomas</code> la fecha de última modificación del ensamblaje, que encontramos en <code>genomas.ena</code>. Para asegurarnos de que a cada ensamblaje le asignamos el valor correcto, usaremos la función <code>match()</code>.</p>
 <p>En <code>genomas</code>, “Assembly.Accession” incluye un sufijo que indica el número de versión del ensamblaje. Este sufijo no está presente en <code>genomas.ena$accession</code>. Para hacer comparables ambas tablas, quitaremos el sufijo de la primera tabla.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Este es un uso avanzado de `sapply()` y `strsplit()`:</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>genomas<span class="sc">$</span>acc <span class="ot">&lt;-</span> <span class="fu">sapply</span>(</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">strsplit</span>(genomas<span class="sc">$</span>Assembly.Accession, <span class="st">&#39;.&#39;</span>, <span class="at">fixed =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>   <span class="st">&#39;[&#39;</span>, <span class="dv">1</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>genomas<span class="sc">$</span>last_updated <span class="ot">&lt;-</span> genomas.ena[<span class="fu">match</span>(genomas<span class="sc">$</span>acc,</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>                                          genomas.ena<span class="sc">$</span>accession),</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">&#39;last_updated&#39;</span>]</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Este es un uso avanzado de `sapply()` y `strsplit()`:</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>genomas<span class="sc">$</span>acc <span class="ot">&lt;-</span> <span class="fu">sapply</span>(</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">strsplit</span>(genomas<span class="sc">$</span>Assembly.Accession, <span class="st">&#39;.&#39;</span>, <span class="at">fixed =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>   <span class="st">&#39;[&#39;</span>, <span class="dv">1</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>genomas<span class="sc">$</span>last_updated <span class="ot">&lt;-</span> genomas.ena[<span class="fu">match</span>(genomas<span class="sc">$</span>acc,</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>                                          genomas.ena<span class="sc">$</span>accession),</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">&#39;last_updated&#39;</span>]</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -2596,51 +2832,149 @@ Nota
 <p>En los archivos GFF, la columna <code>attributes</code> es una lista de parejas de valores “clave = valor”, separadas por punto y coma (“;”). Habiendo creado antes un marco de datos para cada tipo de anotación (genes, CDS, etc.), es de suponer que todas las líneas de un marco de datos tendrán el mismo conjunto de parejas “clave = valor”. Aquí se muestra una manera de extraer esta información y convertirla en columnas adicionales de un marco de datos.</p>
 <p>Veamos el primer valor de <code>attributes</code> en el marco de datos <code>gene</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>gene[<span class="dv">1</span>, <span class="st">&#39;attributes&#39;</span>]</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>gene[<span class="dv">1</span>, <span class="st">&#39;attributes&#39;</span>]</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] &quot;ID=gene-LSM04_009031;Name=LSM04_009031;gbkey=Gene;gene_biotype=protein_coding;locus_tag=LSM04_009031&quot;</code></pre>
+</div>
 </div>
 <p>La función <code>strsplit()</code> en R divide una cadena de caracteres en partes delimitadas por algún carácter o expresión regular. En este caso, queremos dividir esa cadena por los puntos y coma:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">strsplit</span>(gene[<span class="dv">1</span>, <span class="st">&#39;attributes&#39;</span>], <span class="st">&#39;;&#39;</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">strsplit</span>(gene[<span class="dv">1</span>, <span class="st">&#39;attributes&#39;</span>], <span class="st">&#39;;&#39;</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] &quot;ID=gene-LSM04_009031&quot;        &quot;Name=LSM04_009031&quot;          
+[3] &quot;gbkey=Gene&quot;                  &quot;gene_biotype=protein_coding&quot;
+[5] &quot;locus_tag=LSM04_009031&quot;     </code></pre>
+</div>
 </div>
 <p><code>strsplit()</code> ha dividido la cadena de caracteres original en una <em>lista</em> que contiene un único vector de cinco cadenas de caracteres. El motivo de generar una lista en lugar de un simple vector es que <code>strsplit()</code> puede actuar simultáneamente sobre todas las cadenas de caracteres de un vector, y necesita repartir el resultado en diferentes vectores:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">strsplit</span>(gene[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="st">&#39;attributes&#39;</span>], <span class="st">&#39;;&#39;</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">strsplit</span>(gene[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="st">&#39;attributes&#39;</span>], <span class="st">&#39;;&#39;</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] &quot;ID=gene-LSM04_009031&quot;        &quot;Name=LSM04_009031&quot;          
+[3] &quot;gbkey=Gene&quot;                  &quot;gene_biotype=protein_coding&quot;
+[5] &quot;locus_tag=LSM04_009031&quot;     
+
+[[2]]
+[1] &quot;ID=gene-LSM04_007573&quot;        &quot;Name=LSM04_007573&quot;          
+[3] &quot;gbkey=Gene&quot;                  &quot;gene_biotype=protein_coding&quot;
+[5] &quot;locus_tag=LSM04_007573&quot;     
+
+[[3]]
+[1] &quot;ID=gene-LSM04_000706&quot;        &quot;Name=LSM04_000706&quot;          
+[3] &quot;gbkey=Gene&quot;                  &quot;gene_biotype=protein_coding&quot;
+[5] &quot;locus_tag=LSM04_000706&quot;     </code></pre>
+</div>
 </div>
 <p>Podemos guardar la lista de los vectores de los atributos de cada gen en un nuevo objeto, para continuar operando sobre el después:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>atributos <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(gene[ , <span class="st">&#39;attributes&#39;</span>], <span class="st">&#39;;&#39;</span>)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Veamos los 6 primeros elementos:</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(atributos)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Y la longitud total de la lista:</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(atributos)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>atributos <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(gene[ , <span class="st">&#39;attributes&#39;</span>], <span class="st">&#39;;&#39;</span>)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Veamos los 6 primeros elementos:</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(atributos)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] &quot;ID=gene-LSM04_009031&quot;        &quot;Name=LSM04_009031&quot;          
+[3] &quot;gbkey=Gene&quot;                  &quot;gene_biotype=protein_coding&quot;
+[5] &quot;locus_tag=LSM04_009031&quot;     
+
+[[2]]
+[1] &quot;ID=gene-LSM04_007573&quot;        &quot;Name=LSM04_007573&quot;          
+[3] &quot;gbkey=Gene&quot;                  &quot;gene_biotype=protein_coding&quot;
+[5] &quot;locus_tag=LSM04_007573&quot;     
+
+[[3]]
+[1] &quot;ID=gene-LSM04_000706&quot;        &quot;Name=LSM04_000706&quot;          
+[3] &quot;gbkey=Gene&quot;                  &quot;gene_biotype=protein_coding&quot;
+[5] &quot;locus_tag=LSM04_000706&quot;     
+
+[[4]]
+[1] &quot;ID=gene-LSM04_000559&quot;        &quot;Name=LSM04_000559&quot;          
+[3] &quot;gbkey=Gene&quot;                  &quot;gene_biotype=protein_coding&quot;
+[5] &quot;locus_tag=LSM04_000559&quot;     
+
+[[5]]
+[1] &quot;ID=gene-LSM04_006454&quot;        &quot;Name=LSM04_006454&quot;          
+[3] &quot;gbkey=Gene&quot;                  &quot;gene_biotype=protein_coding&quot;
+[5] &quot;locus_tag=LSM04_006454&quot;     
+
+[[6]]
+[1] &quot;ID=gene-LSM04_009090&quot;        &quot;Name=LSM04_009090&quot;          
+[3] &quot;gbkey=Gene&quot;                  &quot;gene_biotype=protein_coding&quot;
+[5] &quot;locus_tag=LSM04_009090&quot;     </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Y la longitud total de la lista:</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(atributos)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 9768</code></pre>
+</div>
 </div>
 <p>Una vez tenemos una lista de los atributos de cada gen, podemos usar funciones de la familia <code>lapply()</code> para operar en paralelo sobre todos sus elementos. Examina la ayuda de <code>lapply()</code> para familiarizarte con estas funciones. A continuación, la usaremos para separar la clave del valor en todos los atributos de todos los genes. Además asignaremos la clave como nombre del valor correspondiente (en R, los elementos de un vector pueden tener nombre).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>atributos2 <span class="ot">&lt;-</span> <span class="fu">lapply</span>(</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>   atributos,</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>   <span class="co"># Definimos una función para aplicarla a cada elemento de &quot;atributos&quot;.</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>   <span class="cf">function</span>(x) {</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>      <span class="co"># &quot;x&quot; es un vector de atributos de un solo gen</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>      lista <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(x, <span class="st">&#39;=&#39;</span>)</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>      <span class="co"># &quot;lista&quot; es una lista de vectores de 2 componentes, clave y valor</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>      valores <span class="ot">&lt;-</span> <span class="fu">sapply</span>(lista, <span class="st">&#39;[&#39;</span>, <span class="dv">2</span>)</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">names</span>(valores) <span class="ot">&lt;-</span> <span class="fu">sapply</span>(lista, <span class="st">&#39;[&#39;</span>, <span class="dv">1</span>)</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(valores)</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>   }</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(atributos2)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>atributos2 <span class="ot">&lt;-</span> <span class="fu">lapply</span>(</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>   atributos,</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>   <span class="co"># Definimos una función para aplicarla a cada elemento de &quot;atributos&quot;.</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>   <span class="cf">function</span>(x) {</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>      <span class="co"># &quot;x&quot; es un vector de atributos de un solo gen</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>      lista <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(x, <span class="st">&#39;=&#39;</span>)</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>      <span class="co"># &quot;lista&quot; es una lista de vectores de 2 componentes, clave y valor</span></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>      valores <span class="ot">&lt;-</span> <span class="fu">sapply</span>(lista, <span class="st">&#39;[&#39;</span>, <span class="dv">2</span>)</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">names</span>(valores) <span class="ot">&lt;-</span> <span class="fu">sapply</span>(lista, <span class="st">&#39;[&#39;</span>, <span class="dv">1</span>)</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(valores)</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>   }</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(atributos2)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+                 ID                Name               gbkey        gene_biotype 
+&quot;gene-LSM04_009031&quot;      &quot;LSM04_009031&quot;              &quot;Gene&quot;    &quot;protein_coding&quot; 
+          locus_tag 
+     &quot;LSM04_009031&quot; 
+
+[[2]]
+                 ID                Name               gbkey        gene_biotype 
+&quot;gene-LSM04_007573&quot;      &quot;LSM04_007573&quot;              &quot;Gene&quot;    &quot;protein_coding&quot; 
+          locus_tag 
+     &quot;LSM04_007573&quot; 
+
+[[3]]
+                 ID                Name               gbkey        gene_biotype 
+&quot;gene-LSM04_000706&quot;      &quot;LSM04_000706&quot;              &quot;Gene&quot;    &quot;protein_coding&quot; 
+          locus_tag 
+     &quot;LSM04_000706&quot; 
+
+[[4]]
+                 ID                Name               gbkey        gene_biotype 
+&quot;gene-LSM04_000559&quot;      &quot;LSM04_000559&quot;              &quot;Gene&quot;    &quot;protein_coding&quot; 
+          locus_tag 
+     &quot;LSM04_000559&quot; 
+
+[[5]]
+                 ID                Name               gbkey        gene_biotype 
+&quot;gene-LSM04_006454&quot;      &quot;LSM04_006454&quot;              &quot;Gene&quot;    &quot;protein_coding&quot; 
+          locus_tag 
+     &quot;LSM04_006454&quot; 
+
+[[6]]
+                 ID                Name               gbkey        gene_biotype 
+&quot;gene-LSM04_009090&quot;      &quot;LSM04_009090&quot;              &quot;Gene&quot;    &quot;protein_coding&quot; 
+          locus_tag 
+     &quot;LSM04_009090&quot; </code></pre>
+</div>
 </div>
 <p>El orden de los atributos se ha mantenido idéntico al orden de sus correspondientes genes. Por eso podemos ahora añadir las columnas de atributos que queramos al marco de datos <code>gene</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>gene<span class="sc">$</span>ID           <span class="ot">&lt;-</span> <span class="fu">sapply</span>(atributos2, <span class="st">&#39;[&#39;</span>, <span class="st">&#39;ID&#39;</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>gene<span class="sc">$</span>Name         <span class="ot">&lt;-</span> <span class="fu">sapply</span>(atributos2, <span class="st">&#39;[&#39;</span>, <span class="st">&#39;Name&#39;</span>)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>gene<span class="sc">$</span>gene_biotype <span class="ot">&lt;-</span> <span class="fu">sapply</span>(atributos2, <span class="st">&#39;[&#39;</span>, <span class="st">&#39;gene_biotype&#39;</span>)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>gene<span class="sc">$</span>locus_tag    <span class="ot">&lt;-</span> <span class="fu">sapply</span>(atributos2, <span class="st">&#39;[&#39;</span>, <span class="st">&#39;locus_tag&#39;</span>)</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">names</span>(gene) <span class="sc">!=</span> <span class="st">&#39;attributes&#39;</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(gene[<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>, f]) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>gene<span class="sc">$</span>ID           <span class="ot">&lt;-</span> <span class="fu">sapply</span>(atributos2, <span class="st">&#39;[&#39;</span>, <span class="st">&#39;ID&#39;</span>)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>gene<span class="sc">$</span>Name         <span class="ot">&lt;-</span> <span class="fu">sapply</span>(atributos2, <span class="st">&#39;[&#39;</span>, <span class="st">&#39;Name&#39;</span>)</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>gene<span class="sc">$</span>gene_biotype <span class="ot">&lt;-</span> <span class="fu">sapply</span>(atributos2, <span class="st">&#39;[&#39;</span>, <span class="st">&#39;gene_biotype&#39;</span>)</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>gene<span class="sc">$</span>locus_tag    <span class="ot">&lt;-</span> <span class="fu">sapply</span>(atributos2, <span class="st">&#39;[&#39;</span>, <span class="st">&#39;locus_tag&#39;</span>)</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">names</span>(gene) <span class="sc">!=</span> <span class="st">&#39;attributes&#39;</span></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(gene[<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>, f]) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in kable_styling(.): no se pudo encontrar la función &quot;kable_styling&quot;</code></pre>
+</div>
 </div>
 
 </section>

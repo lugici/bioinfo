@@ -3,7 +3,7 @@ title: "Trabajar con tablas o marcos de datos con R"
 lang: es
 date: today
 execute: 
-  output: false
+  output: true
   error: true
 engine: knitr
 bibliography: ../../doc/references.bib
