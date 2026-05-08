@@ -300,7 +300,7 @@ ggplot(data = gwas,
    theme_minimal()
 ```
 
-
+Se ha detectado un error en la ejecución de esta sección debido a la ausencia del paquete qvalue. Tras varios intentos de instalación, se deja constancia del error que es puramente tecnico y sin racion con el código.
 
 
 :::{.callout-note icon=false}
