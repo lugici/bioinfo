@@ -2,7 +2,7 @@
 title: "practica10"
 editor: visual
 execute: 
-  output: false
+  output: true
   error: true
 engine: knitr
 bibliography: ../../doc/references.bib
