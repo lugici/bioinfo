@@ -2,7 +2,7 @@
 title: "Práctica 8.BLAST"
 editor: visual
 execute: 
-  output: false
+  output: true
   error: true
 engine: knitr
 bibliography: ../../doc/references.bib
